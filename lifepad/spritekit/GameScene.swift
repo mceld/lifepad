@@ -9,8 +9,8 @@ import SpriteKit
 import GameplayKit
 
 func randomizeGrid(sim: Simulation) {
-    for i in 0..<length {
-        for j in 0..<width {
+    for i in 0..<sim.length {
+        for j in 0..<sim.width {
             if(Int.random(in: 1..<9) == 1) {
                 sim.grid[i][j].state = true
                 sim.liveCells.append(sim.grid[i][j])
@@ -20,18 +20,18 @@ func randomizeGrid(sim: Simulation) {
 }
 
 class GameScene: SKScene {
-   //        let length = Int(round(UIScreen.main.bounds.height / 3))
+//        let length = Int(round(UIScreen.main.bounds.height / 3))
 //        let width = Int(round(UIScreen.main.bounds.width / 3))
     let length = 50
     let width = 50
-    let sim = Simulation(length: length, width: width, grid: emptyGrid(length: length, width: width), liveCells: [])
-    // acts like an init method
-    
+    // acts like an init method ?
+
     override func didMove(to: SKView) {
-        
+        let sim = Simulation(length: length, width: width, grid: emptyGrid(length: length, width: width), liveCells: [])
+        randomizeGrid(sim: sim)
         let simCoroutine = SimulationCoroutine(sim: sim)
         
-        if let grid = Grid(blockSize: 8.0, rows:50, cols:50, sim: simCoroutine) {
+        if let grid = Grid(blockSize: 8.0, rows:50, cols:50) {
             grid.position = CGPoint (x:frame.midX, y:frame.midY)
             addChild(grid)
         }

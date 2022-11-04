@@ -5,45 +5,28 @@
 //  Created by GCCISAdmin on 11/3/22.
 //
 
+// SKSpriteNode that should render the grid based on the simulation state
+
 import Foundation
 import SpriteKit
 
-//class Grid: SKTileMapNode {
-//    private var rows: Int
-//    private var cols: Int
-//    private var cellSize: CGFloat
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//        self.rows = 50
-//    }
-////    init(rows: Int, cols: Int, cellSize: CGFloat) {
-////
-////    }
-//
-//}
-
 class Grid: SKSpriteNode {
 
-    var rows:Int!
-    var cols:Int!
-    var blockSize:CGFloat!
-    @Published var simCoroutine: SimulationCoroutine
-
-    convenience init?(blockSize:CGFloat,rows:Int,cols:Int, simCoroutine: SimulationCoroutine) {
+    var rows: Int!
+    var cols: Int!
+    var blockSize: CGFloat!
+    
+    convenience init?(blockSize:CGFloat,rows:Int,cols:Int) {
         guard let texture = Grid.gridTexture(blockSize: blockSize,rows: rows, cols:cols) else {
             return nil
         }
-        
         self.init(texture: texture, color:SKColor.black, size: texture.size())
-        
         self.blockSize = blockSize
         self.rows = rows
         self.cols = cols
-        self.simCoroutine = simCoroutine
         self.isUserInteractionEnabled = true
     }
-
+    
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
         let size = CGSize(width: CGFloat(cols)*blockSize+1.0, height: CGFloat(rows)*blockSize+1.0)

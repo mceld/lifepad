@@ -1,3 +1,5 @@
+// Contains functions for creating, manipulating, and printing a Conway's game of life simulation
+
 import Foundation
 
 func makeNeighborCoords() -> [(Int, Int)] {

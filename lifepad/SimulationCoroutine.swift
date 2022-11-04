@@ -5,6 +5,8 @@
 //  Created by GCCISAdmin on 11/4/22.
 //
 
+// Concurrently publishes changes to a simulation object that should be bubbled up to any observers
+
 import Foundation
 import SwiftUI
 
@@ -20,6 +22,7 @@ class SimulationCoroutine: Thread, ObservableObject {
     func main(neighborCoords: [(Int, Int)]) async {
         while(sim.liveCells.count != 0 && self.playing) {
             self.sim = nextGen(sim: self.sim, doWrap: self.doWrap, neighborCoords: neighborCoords)
+            print(self.sim)
         }
     }
     
