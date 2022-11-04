@@ -1,13 +1,16 @@
 //
 // ContentView.swift
-// Main view holding all Lifepad components
+// Main view holding all Lifepad
+
 //
+// MARK: ARCHIVE
+// Archive of SwiftUI attempt, non-functional
+//
+
 
 import SwiftUI
 
 struct ContentView: View {
-    
-    var neighborCoords: [(Int, Int)] = []
     
     // These values should be fixed, rotation of screen should just change the orientation of the controls
     // as well as the referencing of the grid (col -> row, row -> col)
@@ -21,15 +24,15 @@ struct ContentView: View {
         
         let length = Int(round(UIScreen.main.bounds.height / 3))
         let width = Int(round(UIScreen.main.bounds.width / 3))
-        var sim = Simulation(length: length, width: width, grid: emptyGrid(length: length, width: width), liveCells: [])
+        let sim = Simulation(length: length, width: width, grid: emptyGrid(length: length, width: width), liveCells: [])
         
         // init neighbor cells
         // covers all of the neighbor spots
-        for i in -1...1 {
-            for j in -1...1 {
-                neighborCoords.append((vertical: i, horizontal: j))
-            }
-        }
+//        for i in -1...1 {
+//            for j in -1...1 {
+//                neighborCoords.append((vertical: i, horizontal: j))
+//            }
+//        }
         
         // Load a preset of some kind
         // randomly populate cells

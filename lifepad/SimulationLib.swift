@@ -1,35 +1,21 @@
 import Foundation
 
+func makeNeighborCoords() -> [(Int, Int)] {
+    var neighborCoords: [(Int, Int)] = []
+    
+    for i in -1...1 {
+        for j in -1...1 {
+            neighborCoords.append((vertical: i, horizontal: j))
+        }
+    }
+    
+    return neighborCoords
+}
+
 struct Cell {
     var state: Bool
     var row: Int
     var col: Int
-}
-
-struct Simulation {
-    var length: Int
-    var width: Int
-    var grid: [[Cell]]
-    var liveCells: [Cell] // Might be better to make this a set
-}
-
-extension Simulation: CustomStringConvertible {
-    var description: String {
-        var result: String = ""
-        
-        for i in 0..<length {
-            for j in 0..<width {
-                if(grid[i][j].state == true) {
-                    result += "@"
-                } else {
-                    result += "."
-                }
-            }
-            result += "\n"
-        }
-        
-        return result
-    }
 }
 
 // Initialize a grid of dead cells length * width in size
@@ -47,6 +33,20 @@ func emptyGrid(length: Int, width: Int) -> [[Cell]] {
     }
     
     return grid
+}
+
+class Simulation {
+    var length: Int
+    var width: Int
+    var grid: [[Cell]]
+    var liveCells: [Cell] // Might be better to make this a set
+    
+    init(length: Int, width: Int, grid: [[Cell]], liveCells: [Cell]) {
+        self.length = length
+        self.width = width
+        self.grid = grid
+        self.liveCells = liveCells
+    }
 }
 
 func wrap(size: Int, num: Int) -> Int {
@@ -188,3 +188,24 @@ func nextGen(
     return Simulation(length: sim.length, width: sim.width, grid: newGrid, liveCells: newLiveCells)
     
 }
+
+extension Simulation: CustomStringConvertible {
+    var description: String {
+        var result: String = ""
+        
+        for i in 0..<length {
+            for j in 0..<width {
+                if(grid[i][j].state == true) {
+                    result += "@"
+                } else {
+                    result += "."
+                }
+            }
+            result += "\n"
+        }
+        
+        return result
+    }
+}
+
+

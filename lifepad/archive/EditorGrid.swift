@@ -5,6 +5,12 @@
 //  Created by GCCISAdmin on 10/27/22.
 //
 
+//
+// MARK: ARCHIVE
+// Archive of SwiftUI attempt, non-functional
+//
+
+
 import SwiftUI
 
 struct EditorGrid: View {
