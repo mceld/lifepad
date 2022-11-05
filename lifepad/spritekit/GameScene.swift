@@ -24,22 +24,39 @@ class GameScene: SKScene {
 //        let width = Int(round(UIScreen.main.bounds.width / 3))
     let length = 50
     let width = 50
-    // acts like an init method ?
-
+    
+    // Store the Simulation object here and create a "run" function that will
+    // run asynchronously and add all creatures to the grid
+    // see objc run function at bottom
+ 
+    // acts like an init / startup method
     override func didMove(to: SKView) {
         let sim = Simulation(length: length, width: width, grid: emptyGrid(length: length, width: width), liveCells: [])
         randomizeGrid(sim: sim)
-        let simCoroutine = SimulationCoroutine(sim: sim)
+//        let simCoroutine = SimulationCoroutine(sim: sim)
         
         if let grid = Grid(blockSize: 8.0, rows:50, cols:50) {
             grid.position = CGPoint (x:frame.midX, y:frame.midY)
             addChild(grid)
         }
         
-        simCoroutine.start()
+        
+        
+//        simCoroutine.start()
     }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
+    }
+    
+    @objc func run() {
+        // maybe ...
+        /**
+         Send a Simulation object to Grid, replacing its current list of live cells (blank at first)
+         with the list of live cells, and drawing each of them
+         Step the simulation at the end or beginning, the coroutine handler (SKScene utility, see github example)
+         will handle the repeated calling of this method
+         Call this method as long as there are live cells, otherwise, pause somehow
+         */
     }
 }

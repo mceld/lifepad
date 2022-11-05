@@ -20,6 +20,8 @@
 		62241B9C2915950E00C6C7B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B982915950D00C6C7B6 /* ContentView.swift */; };
 		62241B9F291597A600C6C7B6 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B9E291597A600C6C7B6 /* Grid.swift */; };
 		62241BA12915A36900C6C7B6 /* SimulationCoroutine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241BA02915A36900C6C7B6 /* SimulationCoroutine.swift */; };
+		627853392917069600A8B5A9 /* GameOfLife in Resources */ = {isa = PBXBuildFile; fileRef = 627853382917069600A8B5A9 /* GameOfLife */; };
+		6278533B291707B300A8B5A9 /* CellSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6278533A291707B300A8B5A9 /* CellSprite.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +39,8 @@
 		62241B982915950D00C6C7B6 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		62241B9E291597A600C6C7B6 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		62241BA02915A36900C6C7B6 /* SimulationCoroutine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationCoroutine.swift; sourceTree = "<group>"; };
+		627853382917069600A8B5A9 /* GameOfLife */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameOfLife; path = ../GameOfLife; sourceTree = "<group>"; };
+		6278533A291707B300A8B5A9 /* CellSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +57,7 @@
 		62241B732915947D00C6C7B6 = {
 			isa = PBXGroup;
 			children = (
+				627853382917069600A8B5A9 /* GameOfLife */,
 				62241B7E2915947D00C6C7B6 /* lifepad */,
 				62241B7D2915947D00C6C7B6 /* Products */,
 			);
@@ -75,6 +80,7 @@
 				62241B962915950D00C6C7B6 /* SimulationLib.swift */,
 				62241B9E291597A600C6C7B6 /* Grid.swift */,
 				62241BA02915A36900C6C7B6 /* SimulationCoroutine.swift */,
+				6278533A291707B300A8B5A9 /* CellSprite.swift */,
 			);
 			path = lifepad;
 			sourceTree = "<group>";
@@ -161,6 +167,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				62241B8B2915947D00C6C7B6 /* Main.storyboard in Resources */,
+				627853392917069600A8B5A9 /* GameOfLife in Resources */,
 				62241B822915947D00C6C7B6 /* GameScene.sks in Resources */,
 				62241B8D2915947E00C6C7B6 /* Assets.xcassets in Resources */,
 				62241B902915947E00C6C7B6 /* LaunchScreen.storyboard in Resources */,
@@ -180,6 +187,7 @@
 				62241B9C2915950E00C6C7B6 /* ContentView.swift in Sources */,
 				62241BA12915A36900C6C7B6 /* SimulationCoroutine.swift in Sources */,
 				62241B9F291597A600C6C7B6 /* Grid.swift in Sources */,
+				6278533B291707B300A8B5A9 /* CellSprite.swift in Sources */,
 				62241B862915947D00C6C7B6 /* GameScene.swift in Sources */,
 				62241B882915947D00C6C7B6 /* GameViewController.swift in Sources */,
 				62241B802915947D00C6C7B6 /* AppDelegate.swift in Sources */,

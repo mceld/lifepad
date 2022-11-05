@@ -26,7 +26,7 @@ class Grid: SKSpriteNode {
         self.cols = cols
         self.isUserInteractionEnabled = true
     }
-    
+
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
         let size = CGSize(width: CGFloat(cols)*blockSize+1.0, height: CGFloat(rows)*blockSize+1.0)
