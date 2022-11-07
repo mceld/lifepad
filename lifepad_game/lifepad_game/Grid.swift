@@ -5,28 +5,47 @@
 //  Created by GCCISAdmin on 11/3/22.
 //
 
-// SKSpriteNode that should render the grid based on the simulation state
-
 import Foundation
 import SpriteKit
 
+//class Grid: SKTileMapNode {
+//    private var rows: Int
+//    private var cols: Int
+//    private var cellSize: CGFloat
+//
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        self.rows = 50
+//    }
+////    init(rows: Int, cols: Int, cellSize: CGFloat) {
+////
+////    }
+//
+//}
+
 class Grid: SKSpriteNode {
 
-    var rows: Int!
-    var cols: Int!
-    var blockSize: CGFloat!
-    var spriteGrid: [[CellSprite]] = []
-    
+    var rows:Int!
+    var cols:Int!
+    var blockSize:CGFloat!
+
     convenience init?(blockSize:CGFloat,rows:Int,cols:Int) {
         guard let texture = Grid.gridTexture(blockSize: blockSize,rows: rows, cols:cols) else {
             return nil
         }
-        self.init(texture: texture, color:SKColor.black, size: texture.size())
+        self.init(texture: texture, color:SKColor.red, size: texture.size())
+//        self.init(blockSize: <#T##CGFloat#>, rows: <#T##Int#>, cols: <#T##Int#>)
         self.blockSize = blockSize
         self.rows = rows
         self.cols = cols
         self.isUserInteractionEnabled = true
     }
+//    required init?(coder aDecoder: NSCoder) {
+//        super.init(coder: aDecoder)
+//        self.rows = 50
+//        self.cols = 50
+//        self.blockSize = 1.0
+//    }
 
     class func gridTexture(blockSize:CGFloat,rows:Int,cols:Int) -> SKTexture? {
         // Add 1 to the height and width to ensure the borders are within the sprite
@@ -61,11 +80,10 @@ class Grid: SKSpriteNode {
     }
 
     func gridPosition(row:Int, col:Int) -> CGPoint {
-        // Center point is the midpoint on both axes, adjust the display location
-        // based on this center assumption
-        let x = CGFloat(col) * blockSize - (blockSize * CGFloat(cols)) / 2.0
-        let y = CGFloat(rows - row - 1) * blockSize - (blockSize * CGFloat(rows)) / 2.0
-        return CGPoint(x: x, y: y)
+        let offset = blockSize / 2.0 + 0.5
+        let x = CGFloat(col) * blockSize - (blockSize * CGFloat(cols)) / 2.0 + offset
+        let y = CGFloat(rows - row - 1) * blockSize - (blockSize * CGFloat(rows)) / 2.0 + offset
+        return CGPoint(x:x, y:y)
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -84,29 +102,5 @@ class Grid: SKSpriteNode {
                 print("\(row) \(col)")
             }
         }
-    }
-    
-    // Fills the grid with minimum number of sprites
-    func populateGrid(sim: Simulation, rows: Int, cols: Int) {
-        var tempGrid: [[CellSprite]] = []
-        
-        for i in 0..<rows {
-            
-            var tempRow: [CellSprite] = []
-            
-            for j in 0..<cols {
-                
-                let cellSprite = CellSprite(size: 10.0, color: UIColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0))
-                cellSprite.position = gridPosition(row: i, col: j)
-                cellSprite.alive = sim.grid[i][j].state
-                addChild(cellSprite)
-                tempRow.append(cellSprite)
-                
-            }
-            
-            tempGrid.append(tempRow)
-        }
-        
-        spriteGrid = tempGrid
     }
 }

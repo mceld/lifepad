@@ -24,6 +24,16 @@
 		6278533B291707B300A8B5A9 /* CellSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6278533A291707B300A8B5A9 /* CellSprite.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		62673F9D291882510088F5D8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 62673F99291882510088F5D8 /* lifepad_game.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 62E3C5DE2914710F00C0A554;
+			remoteInfo = lifepad_game;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		62241B7C2915947D00C6C7B6 /* lifepad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lifepad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62241B7F2915947D00C6C7B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +49,16 @@
 		62241B982915950D00C6C7B6 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		62241B9E291597A600C6C7B6 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		62241BA02915A36900C6C7B6 /* SimulationCoroutine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimulationCoroutine.swift; sourceTree = "<group>"; };
+		62673F8E291882510088F5D8 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
+		62673F8F291882510088F5D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		62673F91291882510088F5D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		62673F93291882510088F5D8 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		62673F94291882510088F5D8 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
+		62673F95291882510088F5D8 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		62673F96291882510088F5D8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		62673F97291882510088F5D8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		62673F98291882510088F5D8 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
+		62673F99291882510088F5D8 /* lifepad_game.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = lifepad_game.xcodeproj; sourceTree = "<group>"; };
 		627853382917069600A8B5A9 /* GameOfLife */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameOfLife; path = ../GameOfLife; sourceTree = "<group>"; };
 		6278533A291707B300A8B5A9 /* CellSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -57,6 +77,7 @@
 		62241B732915947D00C6C7B6 = {
 			isa = PBXGroup;
 			children = (
+				62673F8C291882510088F5D8 /* lifepad_game */,
 				627853382917069600A8B5A9 /* GameOfLife */,
 				62241B7E2915947D00C6C7B6 /* lifepad */,
 				62241B7D2915947D00C6C7B6 /* Products */,
@@ -108,6 +129,39 @@
 			path = spritekit;
 			sourceTree = "<group>";
 		};
+		62673F8C291882510088F5D8 /* lifepad_game */ = {
+			isa = PBXGroup;
+			children = (
+				62673F8D291882510088F5D8 /* lifepad_game */,
+				62673F99291882510088F5D8 /* lifepad_game.xcodeproj */,
+			);
+			path = lifepad_game;
+			sourceTree = "<group>";
+		};
+		62673F8D291882510088F5D8 /* lifepad_game */ = {
+			isa = PBXGroup;
+			children = (
+				62673F8E291882510088F5D8 /* GameViewController.swift */,
+				62673F8F291882510088F5D8 /* Assets.xcassets */,
+				62673F90291882510088F5D8 /* LaunchScreen.storyboard */,
+				62673F92291882510088F5D8 /* Main.storyboard */,
+				62673F94291882510088F5D8 /* GameScene.sks */,
+				62673F95291882510088F5D8 /* Grid.swift */,
+				62673F96291882510088F5D8 /* AppDelegate.swift */,
+				62673F97291882510088F5D8 /* GameScene.swift */,
+				62673F98291882510088F5D8 /* Actions.sks */,
+			);
+			path = lifepad_game;
+			sourceTree = "<group>";
+		};
+		62673F9A291882510088F5D8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				62673F9E291882510088F5D8 /* lifepad_game.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -154,12 +208,28 @@
 			mainGroup = 62241B732915947D00C6C7B6;
 			productRefGroup = 62241B7D2915947D00C6C7B6 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 62673F9A291882510088F5D8 /* Products */;
+					ProjectRef = 62673F99291882510088F5D8 /* lifepad_game.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				62241B7B2915947D00C6C7B6 /* lifepad */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		62673F9E291882510088F5D8 /* lifepad_game.app */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.application;
+			path = lifepad_game.app;
+			remoteRef = 62673F9D291882510088F5D8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		62241B7A2915947D00C6C7B6 /* Resources */ = {
@@ -211,6 +281,22 @@
 				62241B8F2915947E00C6C7B6 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		62673F90291882510088F5D8 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				62673F91291882510088F5D8 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		62673F92291882510088F5D8 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				62673F93291882510088F5D8 /* Base */,
+			);
+			name = Main.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -7,10 +7,15 @@ import SwiftUI
 
 class CellSprite: SKShapeNode {
     
+    var alive: Bool = false {
+        didSet {
+            isHidden = !alive // toggle visibility
+        }
+    }
+    
     init(size: CGFloat, color: UIColor) {
         super.init()
         self.path = CGPath(rect: CGRect(x: 0, y: 0, width: size, height: size), transform: nil)
-//        super.init(rectOf: CGSize(width: Double(size), height: Double(size)))
         self.fillColor = color
     }
     

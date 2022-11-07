@@ -24,7 +24,11 @@ struct ContentView: View {
         
         let length = Int(round(UIScreen.main.bounds.height / 3))
         let width = Int(round(UIScreen.main.bounds.width / 3))
-        let sim = Simulation(length: length, width: width, grid: emptyGrid(length: length, width: width), liveCells: [])
+        
+        self.length = length
+        self.width = width
+        
+        sim = Simulation(rows: length, cols: width, grid: emptyGrid(rows: length, cols: width), liveCells: [])
         
         // init neighbor cells
         // covers all of the neighbor spots
@@ -36,18 +40,18 @@ struct ContentView: View {
         
         // Load a preset of some kind
         // randomly populate cells
-        for i in 0..<length {
-            for j in 0..<width {
-                if(Int.random(in: 1..<9) == 1) {
-                    sim.grid[i][j].state = true
-                    sim.liveCells.append(sim.grid[i][j])
-                }
-            }
-        }
-        
-        self.length = length
-        self.width = width
-        self.sim = sim
+//        for i in 0..<length {
+//            for j in 0..<width {
+//                if(Int.random(in: 1..<9) == 1) {
+//                    sim.grid[i][j].state = true
+//                    sim.liveCells.append(sim.grid[i][j])
+//                }
+//            }
+//        }
+//
+//        self.length = length
+//        self.width = width
+//        self.sim = sim
         
 //        while(sim.liveCells.count != 0) {
 //            sim = nextGen(sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)

@@ -2,32 +2,34 @@
 
 import Foundation
 
-func makeNeighborCoords() -> [(Int, Int)] {
-    var neighborCoords: [(Int, Int)] = []
-    
-    for i in -1...1 {
-        for j in -1...1 {
-            neighborCoords.append((vertical: i, horizontal: j))
-        }
-    }
-    
-    return neighborCoords
-}
-
 struct Cell {
     var state: Bool
     var row: Int
     var col: Int
 }
 
+class Simulation {
+    var rows: Int
+    var cols: Int
+    var grid: [[Cell]]
+    var liveCells: [Cell]
+    
+    init(rows: Int, cols: Int, grid: [[Cell]], liveCells: [Cell]) {
+        self.rows = rows
+        self.cols = cols
+        self.grid = grid
+        self.liveCells = liveCells
+    }
+}
+
 // Initialize a grid of dead cells length * width in size
-func emptyGrid(length: Int, width: Int) -> [[Cell]] {
+func emptyGrid(rows: Int, cols: Int) -> [[Cell]] {
     var grid: [[Cell]] = []
     
-    for row in 0...length {
+    for row in 0..<rows {
         var rowCells: [Cell] = []
         
-        for col in 0...width {
+        for col in 0..<cols {
             rowCells.append(Cell(state: false, row: row, col: col))
         }
         
@@ -37,18 +39,19 @@ func emptyGrid(length: Int, width: Int) -> [[Cell]] {
     return grid
 }
 
-class Simulation {
-    var length: Int
-    var width: Int
-    var grid: [[Cell]]
-    var liveCells: [Cell] // Might be better to make this a set
+func makeNeighborCoords() -> [(Int, Int)] {
+    let neighborCoords: [(vertical: Int, horizontal: Int)] = [
+        (vertical: 0, horizontal: 1)
+        , (vertical: 1, horizontal: 0)
+        , (vertical: 1, horizontal: 1)
+        , (vertical: 0, horizontal: -1)
+        , (vertical: -1, horizontal: 0)
+        , (vertical: -1, horizontal: -1)
+        , (vertical: -1, horizontal: 1)
+        , (vertical: 1, horizontal: -1)
+    ]
     
-    init(length: Int, width: Int, grid: [[Cell]], liveCells: [Cell]) {
-        self.length = length
-        self.width = width
-        self.grid = grid
-        self.liveCells = liveCells
-    }
+    return neighborCoords
 }
 
 func wrap(size: Int, num: Int) -> Int {
@@ -65,7 +68,6 @@ func determineNeighborIndex(size: Int, num: Int, offset: Int, doWrap: Bool) -> I
     }
     
     return num + offset
-    
 }
 
 func getNeighbors(
@@ -75,8 +77,8 @@ func getNeighbors(
     , neighborCoords: [(vertical: Int, horizontal: Int)]
 ) -> [Cell] {
     
-    let length: Int = sim.length
-    let width: Int = sim.width
+    let rows: Int = sim.rows
+    let cols: Int = sim.cols
     let grid: [[Cell]] = sim.grid
     
     var neighbors: [Cell] = []
@@ -87,8 +89,8 @@ func getNeighbors(
     
     for coord in neighborCoords {
         
-        let vIndex = determineNeighborIndex(size: length, num: cell.row, offset: coord.vertical, doWrap: doWrap)
-        let hIndex = determineNeighborIndex(size: width, num: cell.col, offset: coord.horizontal, doWrap: doWrap)
+        let vIndex = determineNeighborIndex(size: rows, num: cell.row, offset: coord.vertical, doWrap: doWrap)
+        let hIndex = determineNeighborIndex(size: cols, num: cell.col, offset: coord.horizontal, doWrap: doWrap)
         
         // Don't add an off the grid neighbor
         if(vIndex == -1 || hIndex == -1) {
@@ -145,58 +147,88 @@ func getSalientCells(
 func nextGen(
     sim: Simulation
     , doWrap: Bool
-    , neighborCoords: [(vertical: Int, horizontal: Int)]
+    , neighborCoords: [(Int, Int)]
 ) -> Simulation {
-    var newGrid: [[Cell]] = emptyGrid(length: sim.length, width: sim.width)
-    var newLiveCells: [Cell] = []
-    let salientCells: [Cell] = getSalientCells(sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
+    let returnSim = Simulation(rows: sim.rows, cols: sim.cols, grid: emptyGrid(rows: sim.rows, cols: sim.cols), liveCells: [])
     
-    // Loop over all salient cells (live cells and their dead neighbors)
-    // do things differently if the cell is alive or dead
-    for var salientCell in salientCells {
-        let neighbors = getNeighbors(
-            cell: salientCell
-            , sim: sim
-            , doWrap: doWrap
-            , neighborCoords: neighborCoords
-        )
-        
-        // Apply Conway's rules
-        // Live cells live only if they have 2 or 3 neighbors
-        // Dead cells become live if they have exactly 3 neighbors
-        // Live cells should be added to the newLiveCells list
-        
-        let liveNeighbors: Int = getLiveNeighbors(neighbors: neighbors)
-
-        if (salientCell.state) { // live
-            if(liveNeighbors == 2 || liveNeighbors == 3) {
-                newLiveCells.append(salientCell)
-            }
-        } else { // dead
-            if(liveNeighbors == 3) {
-                salientCell.state = true // Dead cell lives!
-                newLiveCells.append(salientCell)
+    for i in 0..<sim.rows {
+        for j in 0..<sim.cols {
+            
+            let cell = sim.grid[i][j]
+            let neighbors = getNeighbors(cell: cell, sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
+            let liveNeighbors = getLiveNeighbors(neighbors: neighbors)
+            
+            if (cell.state) { // live
+                if(liveNeighbors == 2 || liveNeighbors == 3) {
+                    returnSim.grid[i][j].state = true
+//                    returnSim.liveCells.append(cell)
+                }
+            } else { // dead
+                if(liveNeighbors == 3) {
+                    returnSim.grid[i][j].state = true
+//                    returnSim.liveCells.append(cell)
+                }
             }
         }
-                
     }
-    
-    // Add all live cells for the next generation to the new grid
-    for newLiveCell in newLiveCells {
-        newGrid[newLiveCell.row][newLiveCell.col].state = newLiveCell.state
-    }
-        
-    // Return the newly constructed simulation
-    return Simulation(length: sim.length, width: sim.width, grid: newGrid, liveCells: newLiveCells)
-    
+    return returnSim
 }
+
+//func nextGen(
+//    sim: Simulation
+//    , doWrap: Bool
+//    , neighborCoords: [(vertical: Int, horizontal: Int)]
+//) -> Simulation {
+//    var newGrid: [[Cell]] = emptyGrid(length: sim.length, width: sim.width)
+//    var newLiveCells: [Cell] = []
+//    let salientCells: [Cell] = getSalientCells(sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
+//
+//    // Loop over all salient cells (live cells and their dead neighbors)
+//    // do things differently if the cell is alive or dead
+//    for var salientCell in salientCells {
+//        let neighbors = getNeighbors(
+//            cell: salientCell
+//            , sim: sim
+//            , doWrap: doWrap
+//            , neighborCoords: neighborCoords
+//        )
+//
+//        // Apply Conway's rules
+//        // Live cells live only if they have 2 or 3 neighbors
+//        // Dead cells become live if they have exactly 3 neighbors
+//        // Live cells should be added to the newLiveCells list
+//
+//        let liveNeighbors: Int = getLiveNeighbors(neighbors: neighbors)
+//
+//        if (salientCell.state) { // live
+//            if(liveNeighbors == 2 || liveNeighbors == 3) {
+//                newLiveCells.append(salientCell)
+//            }
+//        } else { // dead
+//            if(liveNeighbors == 3) {
+//                salientCell.state = true // Dead cell lives!
+//                newLiveCells.append(salientCell)
+//            }
+//        }
+//
+//    }
+//
+//    // Add all live cells for the next generation to the new grid
+//    for newLiveCell in newLiveCells {
+//        newGrid[newLiveCell.row][newLiveCell.col].state = newLiveCell.state
+//    }
+//
+//    // Return the newly constructed simulation
+//    return Simulation(length: sim.length, width: sim.width, grid: newGrid, liveCells: newLiveCells)
+//
+//}
 
 extension Simulation: CustomStringConvertible {
     var description: String {
         var result: String = ""
         
-        for i in 0..<length {
-            for j in 0..<width {
+        for i in 0..<rows {
+            for j in 0..<cols {
                 if(grid[i][j].state == true) {
                     result += "@"
                 } else {
@@ -209,5 +241,3 @@ extension Simulation: CustomStringConvertible {
         return result
     }
 }
-
-
