@@ -52,7 +52,7 @@ class GameScene: SKScene {
         grid.position = CGPoint(x: frame.midX, y: frame.midY)
         addChild(grid)
         
-        let delay = SKAction.wait(forDuration: 0.1)
+        let delay = SKAction.wait(forDuration: 0.08)
         let coroutine = SKAction.perform(#selector(runSimulation), onTarget: self)
         let stepSequence = SKAction.sequence([delay, coroutine])
         let simulation = SKAction.repeatForever(stepSequence)
@@ -65,22 +65,6 @@ class GameScene: SKScene {
     }
     
     @objc func runSimulation() {
-        // maybe ...
-        /**
-         Send a Simulation object to Grid, replacing its current list of live cells (blank at first)
-         with the list of live cells, and drawing each of them
-         Step the simulation at the end or beginning, the coroutine handler (SKScene utility, see github example)
-         will handle the repeated calling of this method
-         Call this method as long as there are live cells, otherwise, pause somehow
-         */
-        
-        // wipe the pixels
-        for i in 0..<sim.rows {
-            for j in 0..<sim.cols {
-                grid.spriteGrid[i][j].alive = false
-            }
-        }
-        
         // calculate next gen
         sim = nextGen(sim: sim, doWrap: true, neighborCoords: neighborCoords)
         

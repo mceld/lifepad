@@ -20,7 +20,6 @@
 		62241B9C2915950E00C6C7B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B982915950D00C6C7B6 /* ContentView.swift */; };
 		62241B9F291597A600C6C7B6 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B9E291597A600C6C7B6 /* Grid.swift */; };
 		62241BA12915A36900C6C7B6 /* SimulationCoroutine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241BA02915A36900C6C7B6 /* SimulationCoroutine.swift */; };
-		627853392917069600A8B5A9 /* GameOfLife in Resources */ = {isa = PBXBuildFile; fileRef = 627853382917069600A8B5A9 /* GameOfLife */; };
 		6278533B291707B300A8B5A9 /* CellSprite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6278533A291707B300A8B5A9 /* CellSprite.swift */; };
 /* End PBXBuildFile section */
 
@@ -59,7 +58,6 @@
 		62673F97291882510088F5D8 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		62673F98291882510088F5D8 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
 		62673F99291882510088F5D8 /* lifepad_game.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = lifepad_game.xcodeproj; sourceTree = "<group>"; };
-		627853382917069600A8B5A9 /* GameOfLife */ = {isa = PBXFileReference; lastKnownFileType = folder; name = GameOfLife; path = ../GameOfLife; sourceTree = "<group>"; };
 		6278533A291707B300A8B5A9 /* CellSprite.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellSprite.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -78,7 +76,6 @@
 			isa = PBXGroup;
 			children = (
 				62673F8C291882510088F5D8 /* lifepad_game */,
-				627853382917069600A8B5A9 /* GameOfLife */,
 				62241B7E2915947D00C6C7B6 /* lifepad */,
 				62241B7D2915947D00C6C7B6 /* Products */,
 			);
@@ -237,7 +234,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				62241B8B2915947D00C6C7B6 /* Main.storyboard in Resources */,
-				627853392917069600A8B5A9 /* GameOfLife in Resources */,
 				62241B822915947D00C6C7B6 /* GameScene.sks in Resources */,
 				62241B8D2915947E00C6C7B6 /* Assets.xcassets in Resources */,
 				62241B902915947E00C6C7B6 /* LaunchScreen.storyboard in Resources */,
@@ -423,7 +419,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 559P58CJZ6;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
@@ -452,7 +448,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 559P58CJZ6;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
