@@ -1,10 +1,3 @@
-//
-//  GameScene.swift
-//  lifepad_game
-//
-//  Created by GCCISAdmin on 11/3/22.
-//
-
 import SpriteKit
 import GameplayKit
 
@@ -20,10 +13,8 @@ func randomizeGrid(sim: Simulation) {
 }
 
 class GameScene: SKScene {
-    let rows = Int(round(UIScreen.main.bounds.height / 6))
-    let cols = Int(round(UIScreen.main.bounds.width / 6))
-//    let rows = 50
-//    let cols = 50
+    let rows = Int(round(UIScreen.main.bounds.height / 7.5))
+    let cols = Int(round(UIScreen.main.bounds.width / 7.5))
     var grid: Grid
     var sim: Simulation
     let neighborCoords: [(Int, Int)] = makeNeighborCoords()
@@ -39,10 +30,10 @@ class GameScene: SKScene {
             , liveCells: []
         )
         randomizeGrid(sim: sim)
-        
+
         grid = Grid(blockSize: 10.0, rows: rows, cols: cols)!
         grid.populateGrid(sim: sim, rows: rows, cols: cols)
-        
+
         super.init(coder: aDecoder)
     }
     
