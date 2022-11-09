@@ -16,7 +16,7 @@ struct ContentView: View {
     init() {
         if let game = SKScene(fileNamed: "GameScene") {
             // Set the scale mode to scale to fit the window
-            game.scaleMode = .aspectFill
+//            game.scaleMode = .aspectFill
             print("hello")
             self.scene = game
         } else {
@@ -33,6 +33,7 @@ struct ContentView: View {
             // Button 1...n for each control on prototype
         ZStack {
             SpriteView(scene: scene!)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
     }
 }
