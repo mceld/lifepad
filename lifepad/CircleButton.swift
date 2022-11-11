@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CircleButton: View {
     var iconName: String
+    var onClick: () -> Void
     @Environment(\.colorScheme) var colorScheme
     
     var darkColor: Color = Color(red: 0.0, green: 0.0, blue: 0.0)
@@ -16,6 +17,7 @@ struct CircleButton: View {
     
     var body: some View {
         Button(action: {
+            onClick()
         }) {
             Image(systemName: iconName)
                 .frame(width: 50, height: 50)
@@ -29,6 +31,6 @@ struct CircleButton: View {
 
 struct CircleButton_Previews: PreviewProvider {
     static var previews: some View {
-        CircleButton(iconName: "eye.fill")
+        CircleButton(iconName: "eye.fill", onClick: {})
     }
 }

@@ -1,5 +1,6 @@
 import SpriteKit
 import GameplayKit
+import SwiftUI
 
 func randomizeGrid(sim: Simulation) {
     for i in 0..<sim.rows {
@@ -15,12 +16,13 @@ func randomizeGrid(sim: Simulation) {
 class GameScene: SKScene {
     let rows = Int(round(UIScreen.main.bounds.height / 7.5))
     let cols = Int(round(UIScreen.main.bounds.width / 7.5))
-    var grid: Grid
-    var sim: Simulation
+    var grid: Grid!
+    var sim: Simulation!
     let neighborCoords: [(Int, Int)] = makeNeighborCoords()
-//    var customizationManager: CustomizationManager
+//    var customizationManager: CustomizationManager!
+//    var cellColor: Binding<UIColor>
     
-    required init?(coder aDecoder: NSCoder) {
+    init(cellColor: Binding<UIColor>) {
         sim = Simulation(
             rows: rows
             , cols: cols
@@ -32,9 +34,13 @@ class GameScene: SKScene {
         )
         randomizeGrid(sim: sim)
 
-        grid = Grid(blockSize: 10.0, rows: rows, cols: cols)!
+        grid = Grid(blockSize: 10.0, rows: rows, cols: cols, cellColor: cellColor)
         grid.populateGrid(sim: sim, rows: rows, cols: cols)
 
+        super.init(size: CGSize(width: cols * 12, height: rows * 12))
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

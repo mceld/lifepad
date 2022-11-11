@@ -22,41 +22,58 @@ import SpriteKit
 
 struct ContentView: View {
     
-    // These values should be fixed, rotation of screen should just change the orientation of the controls
-    // as well as the referencing of the grid (col -> row, row -> col)
-    var scene: SKScene?
-    // maybe use environment object to broadcast changes about the state
     @EnvironmentObject var customizationManager: CustomizationManager
-    @State var cellColor: UIColor = UIColor(red: 0.5, green: 0.0, blue: 1.0, alpha: 1.0)
+//    @State var cellColor: UIColor = UIColor(red: 0.5, green: 0.0, blue: 1.0, alpha: 1.0)
     
-    init() {
-        if let game = SKScene(fileNamed: "GameScene") {
-            // Set the scale mode to scale to fit the window
-            game.scaleMode = .aspectFill
-            self.scene = game
-        } else {
-            self.scene = nil
-            return
-        }
+    var scene: SKScene {
+        let game = GameScene(cellColor: $customizationManager.cellColor)
+        game.scaleMode = .aspectFill
+        return game
     }
+    
+//    init() {
+////        if let game = SKScene(fileNamed: "GameScene") {
+////            // Set the scale mode to scale to fit the window
+////            game.scaleMode = .aspectFill
+//////            let sim = Simulation(
+//////                rows: rows
+//////                , cols: cols
+//////                , grid: emptyGrid(
+//////                    rows: rows
+//////                    , cols: cols
+//////                )
+//////                , liveCells: []
+//////            )
+//////            randomizeGrid(sim: sim)
+//////
+//////            let grid = Grid(blockSize: 10.0, rows: rows, cols: cols)!
+//////            grid.populateGrid(sim: sim, rows: rows, cols: cols)
+////
+////            self.scene = game
+////        } else {
+////            self.scene = nil
+////            return
+////        }
+//    }
     
     var body: some View {
         ZStack { // Overlay controls on grid
-            SpriteView(scene: scene!)
+            SpriteView(scene: scene)
 //                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             
             HStack { // Control Group
+                
                 VStack {
-                    CircleButton(iconName: "paintpalette") // customize
-                    CircleButton(iconName: "infinity") // wrap
-                    CircleButton(iconName: "trash") // clear grid
+                    CircleButton(iconName: "paintpalette", onClick: {self.customizationManager.cellColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
+                    CircleButton(iconName: "infinity", onClick: {}) // wrap
+                    CircleButton(iconName: "trash", onClick: {}) // clear grid
                 }
-                CircleButton(iconName: "arrow.counterclockwise") // restart from last play
+                CircleButton(iconName: "arrow.counterclockwise", onClick: {}) // restart from last play
                 ControlBlock() // play / pause controls
-                CircleButton(iconName: "speedometer") // speed controls
+                CircleButton(iconName: "speedometer", onClick: {}) // speed controls
                 VStack {
-                    CircleButton(iconName: "eye.slash") // hide ui
-                    CircleButton(iconName: "text.book.closed") // library of configs
+                    CircleButton(iconName: "eye.slash", onClick: {}) // hide ui
+                    CircleButton(iconName: "text.book.closed", onClick: {}) // library of configs
                 }
             }
             .frame(

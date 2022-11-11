@@ -9,6 +9,7 @@
 
 import Foundation
 import SpriteKit
+import SwiftUI
 
 class Grid: SKSpriteNode {
 
@@ -16,8 +17,9 @@ class Grid: SKSpriteNode {
     var cols: Int!
     var blockSize: CGFloat!
     var spriteGrid: [[CellSprite]] = []
+    var cellColor: Binding<UIColor>!
     
-    convenience init?(blockSize:CGFloat,rows:Int,cols:Int) {
+    convenience init?(blockSize: CGFloat, rows: Int, cols: Int, cellColor: Binding<UIColor>) {
         guard let texture = Grid.gridTexture(blockSize: blockSize,rows: rows, cols:cols) else {
             return nil
         }
@@ -25,6 +27,7 @@ class Grid: SKSpriteNode {
         self.blockSize = blockSize
         self.rows = rows
         self.cols = cols
+        self.cellColor = cellColor
         self.isUserInteractionEnabled = true
     }
 
@@ -96,7 +99,7 @@ class Grid: SKSpriteNode {
             
             for j in 0..<cols {
                 
-                let cellSprite = CellSprite(size: 10.0, color: UIColor(red: 1.0, green: 1.0, blue: 0.0, alpha: 1.0))
+                let cellSprite = CellSprite(size: 10.0, color: cellColor.wrappedValue)
                 cellSprite.position = gridPosition(row: i, col: j)
                 cellSprite.alive = sim.grid[i][j].state
                 addChild(cellSprite)
