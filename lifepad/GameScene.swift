@@ -18,6 +18,7 @@ class GameScene: SKScene {
     var grid: Grid
     var sim: Simulation
     let neighborCoords: [(Int, Int)] = makeNeighborCoords()
+//    var customizationManager: CustomizationManager
     
     required init?(coder aDecoder: NSCoder) {
         sim = Simulation(

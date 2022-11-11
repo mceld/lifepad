@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		620CE77B291EB10E008448A6 /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CE77A291EB10E008448A6 /* CircleButton.swift */; };
+		620CE77E291EB6F0008448A6 /* ControlBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CE77D291EB6F0008448A6 /* ControlBlock.swift */; };
+		620CE780291EC313008448A6 /* CustomizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CE77F291EC313008448A6 /* CustomizationManager.swift */; };
 		62241B862915947D00C6C7B6 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B852915947D00C6C7B6 /* GameScene.swift */; };
 		62241B8D2915947E00C6C7B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 62241B8C2915947E00C6C7B6 /* Assets.xcassets */; };
 		62241B9A2915950E00C6C7B6 /* SimulationLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B962915950D00C6C7B6 /* SimulationLib.swift */; };
@@ -32,6 +35,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		620CE77A291EB10E008448A6 /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
+		620CE77D291EB6F0008448A6 /* ControlBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBlock.swift; sourceTree = "<group>"; };
+		620CE77F291EC313008448A6 /* CustomizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizationManager.swift; sourceTree = "<group>"; };
 		62241B7C2915947D00C6C7B6 /* lifepad.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lifepad.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		62241B852915947D00C6C7B6 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		62241B8C2915947E00C6C7B6 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -98,6 +104,9 @@
 				62241B9E291597A600C6C7B6 /* Grid.swift */,
 				62241BA02915A36900C6C7B6 /* SimulationCoroutine.swift */,
 				6278533A291707B300A8B5A9 /* CellSprite.swift */,
+				620CE77A291EB10E008448A6 /* CircleButton.swift */,
+				620CE77D291EB6F0008448A6 /* ControlBlock.swift */,
+				620CE77F291EC313008448A6 /* CustomizationManager.swift */,
 			);
 			path = lifepad;
 			sourceTree = "<group>";
@@ -233,10 +242,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				620CE77B291EB10E008448A6 /* CircleButton.swift in Sources */,
 				62241B9B2915950E00C6C7B6 /* EditorGrid.swift in Sources */,
 				62241B9A2915950E00C6C7B6 /* SimulationLib.swift in Sources */,
+				620CE77E291EB6F0008448A6 /* ControlBlock.swift in Sources */,
 				62241B9C2915950E00C6C7B6 /* ContentView.swift in Sources */,
 				62241BA12915A36900C6C7B6 /* SimulationCoroutine.swift in Sources */,
+				620CE780291EC313008448A6 /* CustomizationManager.swift in Sources */,
 				62241B9F291597A600C6C7B6 /* Grid.swift in Sources */,
 				62A96805291B40D90012D1D8 /* LifepadApp.swift in Sources */,
 				6278533B291707B300A8B5A9 /* CellSprite.swift in Sources */,
