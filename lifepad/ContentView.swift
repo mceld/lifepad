@@ -1,6 +1,7 @@
 // Main view holding all Lifepad controls and scenes
 // https://www.hackingwithswift.com/quick-start/swiftui/how-to-integrate-spritekit-using-spriteview
 // https://stackoverflow.com/questions/68365480/pass-share-class-with-spriteview-gamescene-from-a-swiftui-view // State and environment
+// https://stackoverflow.com/questions/38865788/moving-camera-in-spritekit-swift
 
 // TODO
 // Editing the grid, how to manage race condition?
