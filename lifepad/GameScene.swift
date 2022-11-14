@@ -69,10 +69,11 @@ class GameScene: SKScene {
     }
     
     @objc func runSimulation() {
-        // calculate next gen
-        sim = nextGen(sim: sim, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
         
         if(customizationManager.playing) {
+            // calculate next gen
+            sim = nextGen(sim: sim, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
+            
             // draw the next gen
             for i in 0..<sim.rows {
                 for j in 0..<sim.cols {
