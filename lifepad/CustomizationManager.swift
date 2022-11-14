@@ -10,11 +10,26 @@ import UIKit
 
 class CustomizationManager: NSObject, ObservableObject {
     var cellColor: UIColor
+    var gridColor: UIColor
     var doWrap: Bool
+    var playing: Bool
     
     override init() {
         // load defaults
-        self.cellColor = UIColor(red: 0.5, green: 0.0, blue: 1.0, alpha: 1.0)
+        self.cellColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        self.gridColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         self.doWrap = false
+        self.playing = false
+    }
+    
+    override var description: String {
+        var result: String = ""
+        
+        result += "cellColor:" + self.cellColor.debugDescription + "\n"
+        result += "gridColor:" + self.gridColor.debugDescription + "\n"
+        result += "doWrap:" + String(self.doWrap) + "\n"
+        result += "playing:" + String(self.playing) + "\n"
+        
+        return result
     }
 }

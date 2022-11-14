@@ -22,40 +22,13 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    
-    @EnvironmentObject var customizationManager: CustomizationManager
-//    @State var cellColor: UIColor = UIColor(red: 0.5, green: 0.0, blue: 1.0, alpha: 1.0)
+    @StateObject var customizationManager = CustomizationManager()
     
     var scene: SKScene {
-        let game = GameScene(cellColor: $customizationManager.cellColor)
+        let game = GameScene(customizationManager: customizationManager)
         game.scaleMode = .aspectFill
         return game
     }
-    
-//    init() {
-////        if let game = SKScene(fileNamed: "GameScene") {
-////            // Set the scale mode to scale to fit the window
-////            game.scaleMode = .aspectFill
-//////            let sim = Simulation(
-//////                rows: rows
-//////                , cols: cols
-//////                , grid: emptyGrid(
-//////                    rows: rows
-//////                    , cols: cols
-//////                )
-//////                , liveCells: []
-//////            )
-//////            randomizeGrid(sim: sim)
-//////
-//////            let grid = Grid(blockSize: 10.0, rows: rows, cols: cols)!
-//////            grid.populateGrid(sim: sim, rows: rows, cols: cols)
-////
-////            self.scene = game
-////        } else {
-////            self.scene = nil
-////            return
-////        }
-//    }
     
     var body: some View {
         ZStack { // Overlay controls on grid
@@ -65,12 +38,12 @@ struct ContentView: View {
             HStack { // Control Group
                 
                 VStack {
-                    CircleButton(iconName: "paintpalette", onClick: {self.customizationManager.cellColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)})
-                    CircleButton(iconName: "infinity", onClick: {}) // wrap
+                    CircleButton(iconName: "paintpalette", onClick: {print(customizationManager);self.customizationManager.cellColor = UIColor(red: Double.random(in: 1...1.0), green: Double.random(in: 1...1.0), blue: Double.random(in: 1...1.0), alpha: 1.0)})
+                    CircleButton(iconName: "infinity", onClick: {self.customizationManager.doWrap.toggle()}) // wrap
                     CircleButton(iconName: "trash", onClick: {}) // clear grid
                 }
                 CircleButton(iconName: "arrow.counterclockwise", onClick: {}) // restart from last play
-                ControlBlock() // play / pause controls
+                ControlBlock(playPauseAction: {self.customizationManager.playing.toggle()}) // play / pause controls
                 CircleButton(iconName: "speedometer", onClick: {}) // speed controls
                 VStack {
                     CircleButton(iconName: "eye.slash", onClick: {}) // hide ui

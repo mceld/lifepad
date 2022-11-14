@@ -20,17 +20,11 @@ struct CircleButton: View {
             onClick()
         }) {
             Image(systemName: iconName)
-                .frame(width: 50, height: 50)
-                .font(.title)
-                .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
-                .background(colorScheme == .dark ? darkColor : lightColor)
-                .clipShape(Circle())
         }
-    }
-}
-
-struct CircleButton_Previews: PreviewProvider {
-    static var previews: some View {
-        CircleButton(iconName: "eye.fill", onClick: {})
+        .frame(width: 50, height: 50)
+        .font(.title)
+        .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
+        .background(colorScheme == .dark ? darkColor : lightColor)
+        .clipShape(Circle())
     }
 }

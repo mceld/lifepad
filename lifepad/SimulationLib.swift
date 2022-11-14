@@ -161,12 +161,10 @@ func nextGen(
             if (cell.state) { // live
                 if(liveNeighbors == 2 || liveNeighbors == 3) {
                     returnSim.grid[i][j].state = true
-//                    returnSim.liveCells.append(cell)
                 }
             } else { // dead
                 if(liveNeighbors == 3) {
                     returnSim.grid[i][j].state = true
-//                    returnSim.liveCells.append(cell)
                 }
             }
         }

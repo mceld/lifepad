@@ -13,6 +13,22 @@ struct ControlBlock: View {
     var darkColor: Color = Color(red: 0.0, green: 0.0, blue: 0.0)
     var lightColor: Color = Color(red: 1.0, green: 1.0, blue: 1.0)
     
+    @State private var playPauseIcon: String = "play"
+    @State private var playing: Bool = false
+    
+    var playPauseAction: () -> Void
+    
+    func togglePlaying() {
+        playPauseAction()
+        if(self.playing) {
+            self.playPauseIcon = "play"
+            self.playing = false
+        } else {
+            self.playPauseIcon = "pause"
+            self.playing = true
+        }
+    }
+    
     var body: some View {
         HStack {
             Button(action: {
@@ -22,16 +38,11 @@ struct ControlBlock: View {
                     .font(.title)
                     .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
             }
+            // play / pause
             Button(action: {
+                togglePlaying()
             }) {
-                Image(systemName: "play")
-                    .frame(width: 50, height: 50)
-                    .font(.title)
-                    .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
-            }
-            Button(action: {
-            }) {
-                Image(systemName: "pause")
+                Image(systemName: playPauseIcon)
                     .frame(width: 50, height: 50)
                     .font(.title)
                     .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
@@ -50,8 +61,8 @@ struct ControlBlock: View {
     }
 }
 
-struct ControlBlock_Previews: PreviewProvider {
-    static var previews: some View {
-        ControlBlock()
-    }
-}
+//struct ControlBlock_Previews: PreviewProvider {
+//    static var previews: some View {
+//        ControlBlock()
+//    }
+//}

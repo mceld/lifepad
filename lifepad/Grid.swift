@@ -16,10 +16,10 @@ class Grid: SKSpriteNode {
     var rows: Int!
     var cols: Int!
     var blockSize: CGFloat!
+    var cellColor: UIColor!
     var spriteGrid: [[CellSprite]] = []
-    var cellColor: Binding<UIColor>!
     
-    convenience init?(blockSize: CGFloat, rows: Int, cols: Int, cellColor: Binding<UIColor>) {
+    convenience init?(blockSize: CGFloat, rows: Int, cols: Int, initCellColor: UIColor) {
         guard let texture = Grid.gridTexture(blockSize: blockSize,rows: rows, cols:cols) else {
             return nil
         }
@@ -27,7 +27,7 @@ class Grid: SKSpriteNode {
         self.blockSize = blockSize
         self.rows = rows
         self.cols = cols
-        self.cellColor = cellColor
+        self.cellColor = initCellColor
         self.isUserInteractionEnabled = true
     }
 
@@ -90,6 +90,7 @@ class Grid: SKSpriteNode {
     }
     
     // Fills the grid with minimum number of sprites
+    // Acts like an init draw
     func populateGrid(sim: Simulation, rows: Int, cols: Int) {
         var tempGrid: [[CellSprite]] = []
         
@@ -99,7 +100,7 @@ class Grid: SKSpriteNode {
             
             for j in 0..<cols {
                 
-                let cellSprite = CellSprite(size: 10.0, color: cellColor.wrappedValue)
+                let cellSprite = CellSprite(size: 10.0, color: cellColor)
                 cellSprite.position = gridPosition(row: i, col: j)
                 cellSprite.alive = sim.grid[i][j].state
                 addChild(cellSprite)
