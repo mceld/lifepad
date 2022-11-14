@@ -14,18 +14,16 @@ struct ControlBlock: View {
     var lightColor: Color = Color(red: 1.0, green: 1.0, blue: 1.0)
     
     @State private var playPauseIcon: String = "play"
-    @State private var playing: Bool = false
     
-    var playPauseAction: () -> Void
+    @Binding var playing: Bool
     
     func togglePlaying() {
-        playPauseAction()
-        if(self.playing) {
-            self.playPauseIcon = "play"
-            self.playing = false
+        if(playing) {
+            playPauseIcon = "play"
+            playing = false
         } else {
-            self.playPauseIcon = "pause"
-            self.playing = true
+            playPauseIcon = "pause"
+            playing = true
         }
     }
     

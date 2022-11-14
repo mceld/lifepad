@@ -19,6 +19,7 @@ class GameScene: SKScene {
     var grid: Grid! // area where cells / lines are drawn
     var sim: Simulation! // holds the computational portion of the simulation
     let neighborCoords: [(Int, Int)] = makeNeighborCoords() // array of coordinates to check around every cell
+    var previousCameraPoint = CGPoint.zero
     @ObservedObject var customizationManager: CustomizationManager //
     
     init(customizationManager: CustomizationManager) {
@@ -35,7 +36,7 @@ class GameScene: SKScene {
         
         self.customizationManager = customizationManager
         
-        grid = Grid(blockSize: 10.0, rows: rows, cols: cols, initCellColor: customizationManager.cellColor)
+        grid = Grid(blockSize: 10.0, rows: rows, cols: cols, initCellColor: UIColor(customizationManager.cellColor))
         grid.populateGrid(sim: sim, rows: rows, cols: cols)
 
         super.init(size: CGSize(width: cols * 12, height: rows * 12))
@@ -61,7 +62,33 @@ class GameScene: SKScene {
         let stepSequence = SKAction.sequence([delay, coroutine])
         let simulation = SKAction.repeatForever(stepSequence)
         
+        // camera settings
+        let panGesture = UIPanGestureRecognizer()
+        panGesture.addTarget(self, action: #selector(panGestureAction(_:)))
+        
         self.run(simulation)
+    }
+    
+    // camera pan gesture
+    @objc func panGestureAction(_ sender: UIPanGestureRecognizer) {
+        // camera has a weak reference, check before proceeding
+        guard let camera = self.camera else {
+            return
+        }
+        
+        // save camera position when starting movement
+        if sender.state == .began {
+            previousCameraPoint = camera.position
+        }
+        
+        // move the camera
+        let translation = sender.translation(in: self.view)
+        let newPosition = CGPoint(
+            x: previousCameraPoint.x + translation.x * -1
+            , y: previousCameraPoint.y + translation.y
+        )
+        
+        camera.position = newPosition
     }
     
     override func update(_ currentTime: TimeInterval) {
@@ -70,7 +97,7 @@ class GameScene: SKScene {
     
     @objc func runSimulation() {
         
-        if(customizationManager.playing) {
+        if(customizationManager.playing && !sim.liveCells.isEmpty) {
             // calculate next gen
             sim = nextGen(sim: sim, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
             
@@ -78,7 +105,7 @@ class GameScene: SKScene {
             for i in 0..<sim.rows {
                 for j in 0..<sim.cols {
                     grid.spriteGrid[i][j].alive = sim.grid[i][j].state
-                    grid.spriteGrid[i][j].fillColor = customizationManager.cellColor // TODO should be moved to a function that simply updates all CellSprite children on the grid
+                    grid.spriteGrid[i][j].fillColor = UIColor(customizationManager.cellColor) // TODO should be moved to a function that simply updates all CellSprite children on the grid
                 }
             }
         }

@@ -113,4 +113,14 @@ class Grid: SKSpriteNode {
         
         spriteGrid = tempGrid
     }
+    
+    // un-draw everything
+    func wipeGrid() {
+        for i in 0..<rows {
+            for j in 0..<cols {
+                spriteGrid[i][j].alive = false
+            }
+        }
+    }
+
 }

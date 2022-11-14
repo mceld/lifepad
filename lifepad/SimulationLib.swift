@@ -8,6 +8,15 @@ struct Cell {
     var col: Int
 }
 
+extension Cell: CustomStringConvertible {
+    var description: String {
+        if state {
+            return "@"
+        }
+        return "."
+    }
+}
+
 class Simulation {
     var rows: Int
     var cols: Int
@@ -161,10 +170,12 @@ func nextGen(
             if (cell.state) { // live
                 if(liveNeighbors == 2 || liveNeighbors == 3) {
                     returnSim.grid[i][j].state = true
+                    returnSim.liveCells.append(returnSim.grid[i][j])
                 }
             } else { // dead
                 if(liveNeighbors == 3) {
                     returnSim.grid[i][j].state = true
+                    returnSim.liveCells.append(returnSim.grid[i][j])
                 }
             }
         }
