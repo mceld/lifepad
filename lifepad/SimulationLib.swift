@@ -17,7 +17,7 @@ extension Cell: CustomStringConvertible {
     }
 }
 
-class Simulation {
+class Simulation: NSObject, ObservableObject {
     var rows: Int
     var cols: Int
     var grid: [[Cell]]
@@ -232,21 +232,21 @@ func nextGen(
 //
 //}
 
-extension Simulation: CustomStringConvertible {
-    var description: String {
-        var result: String = ""
-        
-        for i in 0..<rows {
-            for j in 0..<cols {
-                if(grid[i][j].state == true) {
-                    result += "@"
-                } else {
-                    result += "."
-                }
-            }
-            result += "\n"
-        }
-        
-        return result
-    }
-}
+//extension Simulation: CustomStringConvertible {
+//    var description: String {
+//        var result: String = ""
+//
+//        for i in 0..<rows {
+//            for j in 0..<cols {
+//                if(grid[i][j].state == true) {
+//                    result += "@"
+//                } else {
+//                    result += "."
+//                }
+//            }
+//            result += "\n"
+//        }
+//
+//        return result
+//    }
+//}

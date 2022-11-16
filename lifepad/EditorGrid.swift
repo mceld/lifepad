@@ -47,7 +47,6 @@ struct EditorGrid: View {
         return s
     }
     
-    
     // Cosmetics
     @Binding var doWrap: Bool
     

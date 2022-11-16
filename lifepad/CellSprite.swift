@@ -17,6 +17,7 @@ class CellSprite: SKShapeNode {
         super.init()
         self.path = CGPath(rect: CGRect(x: 0, y: 0, width: size, height: size), transform: nil)
         self.fillColor = color
+//        self.strokeColor = .clear
     }
     
     // required by swiftc

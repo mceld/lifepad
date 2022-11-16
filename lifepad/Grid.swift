@@ -41,6 +41,7 @@ class Grid: SKSpriteNode {
         }
         let bezierPath = UIBezierPath()
         let offset:CGFloat = 0.5
+//        let offset:CGFloat = 0.0
         // Draw vertical lines
         for i in 0...cols {
             let x = CGFloat(i)*blockSize + offset

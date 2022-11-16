@@ -10,22 +10,88 @@
 // Color controls, pane with color picker
 
 
+// Hide UI -> grid lines should be toggled, stroke of cellsprites set to clear
+
 import SwiftUI
 import SpriteKit
 
+func initSim(rows: Int, cols: Int) -> Simulation {
+    var sim = Simulation(
+        rows: rows
+        , cols: cols
+        , grid: emptyGrid(
+            rows: rows
+            , cols: cols
+        )
+        , liveCells: []
+    )
+    randomizeGrid(sim: sim)
+    return sim
+}
+
 struct ContentView: View {
     @StateObject var customizationManager = CustomizationManager()
+    
     @State var wrapButtonState: Bool = false
+    @State private var dragOffset = CGSize.zero
+    @State private var currentScale = 1.0
+    @State private var lastScale = 1.0
+    
+    let rows = Int(round(UIScreen.main.bounds.height / 7.5))
+    let cols = Int(round(UIScreen.main.bounds.width / 7.5))
+    
+    // TODO need to fix state management for simulation so it isn't redrawn with every gesture
+    @StateObject var simulation: Simulation
+    
+    private let minScale = 1.0
+    private let maxScale = 4.0
+    private let zoomSpeed: CGFloat = 0.5
     
     var scene: GameScene {
-        let game = GameScene(customizationManager: customizationManager)
-        game.scaleMode = .aspectFill
+        let game = GameScene(sim: simulation, rows: rows, cols: cols, customizationManager: customizationManager)
+//        game.scaleMode = .aspectFill
+        
+//        let camera = SKCameraNode()
+//        camera.position = CGPoint(x: game.frame.midX, y: game.frame.midY)
+//        game.addChild(camera)
+        
         return game
     }
+    
+    
     
     var body: some View {
         ZStack { // Overlay controls on grid
             SpriteView(scene: scene)
+                .offset(dragOffset)
+                .scaleEffect(currentScale)
+                .gesture(
+                    DragGesture()
+                        .onChanged { gesture in
+//                            let newX = max(0, gesture.translation)
+                            dragOffset = gesture.translation
+                            print(dragOffset)
+                        }
+//                        .onEnded({ gesture in
+//                            dragOffset = CGSize.zero
+//                        })
+                )
+                .gesture(
+                    MagnificationGesture()
+                        .onChanged { amount in
+//                            currentScale = amount - 1
+                            var deltaScale = amount
+                            deltaScale = ((deltaScale - 1) * zoomSpeed) + 1
+                            deltaScale = min(deltaScale, maxScale)
+                            deltaScale = max(deltaScale, minScale)
+                            currentScale = deltaScale
+                        }
+                        .onEnded { amount in
+                            lastScale = currentScale
+//                            currentScale = 0
+//                            print(finalScale)
+                        }
+                )
 //                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             
             HStack { // Control Group

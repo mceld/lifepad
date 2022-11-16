@@ -14,31 +14,23 @@ func randomizeGrid(sim: Simulation) {
 }
 
 class GameScene: SKScene {
-    let rows = Int(round(UIScreen.main.bounds.height / 7.5))
-    let cols = Int(round(UIScreen.main.bounds.width / 7.5))
+//    let rows = Int(round(UIScreen.main.bounds.height / 7.5))
+//    let cols = Int(round(UIScreen.main.bounds.width / 7.5))
     var grid: Grid! // area where cells / lines are drawn
     var sim: Simulation! // holds the computational portion of the simulation
     let neighborCoords: [(Int, Int)] = makeNeighborCoords() // array of coordinates to check around every cell
     var previousCameraPoint = CGPoint.zero
     @ObservedObject var customizationManager: CustomizationManager //
     
-    init(customizationManager: CustomizationManager) {
-        sim = Simulation(
-            rows: rows
-            , cols: cols
-            , grid: emptyGrid(
-                rows: rows
-                , cols: cols
-            )
-            , liveCells: []
-        )
-        randomizeGrid(sim: sim)
+    init(sim: Simulation, rows: Int, cols: Int, customizationManager: CustomizationManager) {
+        
+        self.sim = sim
         
         self.customizationManager = customizationManager
         
         grid = Grid(blockSize: 10.0, rows: rows, cols: cols, initCellColor: UIColor(customizationManager.cellColor))
         grid.populateGrid(sim: sim, rows: rows, cols: cols)
-
+        
         super.init(size: CGSize(width: cols * 12, height: rows * 12))
     }
     
@@ -63,14 +55,21 @@ class GameScene: SKScene {
         let simulation = SKAction.repeatForever(stepSequence)
         
         // camera settings
-        let panGesture = UIPanGestureRecognizer()
-        panGesture.addTarget(self, action: #selector(panGestureAction(_:)))
-        
+//        let panGesture = UIPanGestureRecognizer()
+//        panGesture.addTarget(self, action: #selector(handlePan(_:)))
+//        to.addGestureRecognizer(panGesture)
+//
+//        let pinchGesture = UIPinchGestureRecognizer()
+//        pinchGesture.addTarget(self, action: #selector(handlePinch(_:)))
+//        to.addGestureRecognizer(pinchGesture)
+//        
         self.run(simulation)
     }
     
     // camera pan gesture
-    @objc func panGestureAction(_ sender: UIPanGestureRecognizer) {
+    @objc func handlePan(_ sender: UIPanGestureRecognizer) {
+//        print("panning")
+//        print(self.camera)
         // camera has a weak reference, check before proceeding
         guard let camera = self.camera else {
             return
@@ -89,6 +88,29 @@ class GameScene: SKScene {
         )
         
         camera.position = newPosition
+    }
+    
+    @objc func handlePinch(_ sender: UIPinchGestureRecognizer) {
+//        print("pinching")
+//        print(self.camera)
+        guard let camera = self.camera else {
+            return
+        }
+        
+        if sender.state == .began || sender.state == .changed {
+            let currentScale: CGFloat = (camera.xScale)
+            let minScale: CGFloat = 0.5
+            let maxScale: CGFloat = 2.0
+            let zoomSpeed: CGFloat = 0.5
+            var deltaScale = sender.scale
+            
+            deltaScale = ((deltaScale - 1) * zoomSpeed) + 1
+            deltaScale = min(deltaScale, maxScale / currentScale)
+            deltaScale = max(deltaScale, minScale / currentScale)
+            
+            camera.xScale = deltaScale
+            camera.yScale = deltaScale
+        }
     }
     
     override func update(_ currentTime: TimeInterval) {
