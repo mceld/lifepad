@@ -1,6 +1,7 @@
 // Contains functions for creating, manipulating, and printing a Conway's game of life simulation
 
 import Foundation
+import UIKit
 
 struct Cell {
     var state: Bool
@@ -17,6 +18,20 @@ extension Cell: CustomStringConvertible {
     }
 }
 
+func initRandomSim(rows: Int, cols: Int) -> Simulation {
+    let sim = Simulation(
+        rows: rows
+        , cols: cols
+        , grid: emptyGrid(
+            rows: rows
+            , cols: cols
+        )
+        , liveCells: []
+    )
+    randomizeGrid(sim: sim)
+    return sim
+}
+
 class Simulation: NSObject, ObservableObject {
     var rows: Int
     var cols: Int
@@ -29,6 +44,7 @@ class Simulation: NSObject, ObservableObject {
         self.grid = grid
         self.liveCells = liveCells
     }
+    
 }
 
 // Initialize a grid of dead cells length * width in size

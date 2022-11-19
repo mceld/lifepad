@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6202D860292982E7000D34AD /* WrapButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202D85F292982E7000D34AD /* WrapButton.swift */; };
 		620CE77B291EB10E008448A6 /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CE77A291EB10E008448A6 /* CircleButton.swift */; };
 		620CE77E291EB6F0008448A6 /* ControlBlock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CE77D291EB6F0008448A6 /* ControlBlock.swift */; };
 		620CE780291EC313008448A6 /* CustomizationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 620CE77F291EC313008448A6 /* CustomizationManager.swift */; };
@@ -36,6 +37,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6202D85F292982E7000D34AD /* WrapButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WrapButton.swift; sourceTree = "<group>"; };
 		620CE77A291EB10E008448A6 /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
 		620CE77D291EB6F0008448A6 /* ControlBlock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ControlBlock.swift; sourceTree = "<group>"; };
 		620CE77F291EC313008448A6 /* CustomizationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomizationManager.swift; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 				620CE77D291EB6F0008448A6 /* ControlBlock.swift */,
 				620CE77F291EC313008448A6 /* CustomizationManager.swift */,
 				6250A6002922CABB000DC7BC /* StepStack.swift */,
+				6202D85F292982E7000D34AD /* WrapButton.swift */,
 			);
 			path = lifepad;
 			sourceTree = "<group>";
@@ -254,6 +257,7 @@
 				62241BA12915A36900C6C7B6 /* SimulationCoroutine.swift in Sources */,
 				620CE780291EC313008448A6 /* CustomizationManager.swift in Sources */,
 				62241B9F291597A600C6C7B6 /* Grid.swift in Sources */,
+				6202D860292982E7000D34AD /* WrapButton.swift in Sources */,
 				62A96805291B40D90012D1D8 /* LifepadApp.swift in Sources */,
 				6278533B291707B300A8B5A9 /* CellSprite.swift in Sources */,
 				62241B862915947D00C6C7B6 /* GameScene.swift in Sources */,

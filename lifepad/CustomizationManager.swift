@@ -9,22 +9,29 @@ import Foundation
 import UIKit
 import SwiftUI
 
+struct Controller {
+    var clearChange: Bool
+}
+
 class CustomizationManager: NSObject, ObservableObject {
-//    var cellColor: UIColor
-//    var gridColor: UIColor
     var cellColor: Color
     var gridColor: Color
     var doWrap: Bool
     var playing: Bool
+    var uiOpacity: Double
+    
+    var controller: Controller
     
     override init() {
         // load defaults
 //        self.cellColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
 //        self.gridColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         self.cellColor = Color(red: 1.0, green: 1.0, blue: 1.0)
-        self.gridColor = Color(red: 1.0, green: 1.0, blue: 1.0)
+        self.gridColor = Color(red: 0.0, green: 0.0, blue: 0.0)
         self.doWrap = false
         self.playing = false
+        self.uiOpacity = 1.0
+        self.controller = Controller(clearChange: false)
     }
     
     override var description: String {
