@@ -24,8 +24,6 @@ class CustomizationManager: NSObject, ObservableObject {
     
     override init() {
         // load defaults
-//        self.cellColor = UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-//        self.gridColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 1.0)
         self.cellColor = Color(red: 1.0, green: 1.0, blue: 1.0)
         self.gridColor = Color(red: 0.0, green: 0.0, blue: 0.0)
         self.doWrap = false

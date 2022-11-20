@@ -18,20 +18,6 @@ extension Cell: CustomStringConvertible {
     }
 }
 
-func initRandomSim(rows: Int, cols: Int) -> Simulation {
-    let sim = Simulation(
-        rows: rows
-        , cols: cols
-        , grid: emptyGrid(
-            rows: rows
-            , cols: cols
-        )
-        , liveCells: []
-    )
-    randomizeGrid(sim: sim)
-    return sim
-}
-
 class Simulation: NSObject, ObservableObject {
     var rows: Int
     var cols: Int
@@ -62,6 +48,31 @@ func emptyGrid(rows: Int, cols: Int) -> [[Cell]] {
     }
     
     return grid
+}
+
+func randomizeGrid(sim: Simulation) {
+    for i in 0..<sim.rows {
+        for j in 0..<sim.cols {
+            if(Int.random(in: 1..<9) == 1) {
+                sim.grid[i][j].state = true
+                sim.liveCells.append(sim.grid[i][j])
+            }
+        }
+    }
+}
+
+func initRandomSim(rows: Int, cols: Int) -> Simulation {
+    let sim = Simulation(
+        rows: rows
+        , cols: cols
+        , grid: emptyGrid(
+            rows: rows
+            , cols: cols
+        )
+        , liveCells: []
+    )
+    randomizeGrid(sim: sim)
+    return sim
 }
 
 func makeNeighborCoords() -> [(Int, Int)] {
@@ -198,6 +209,10 @@ func nextGen(
     }
     return returnSim
 }
+
+// // // //
+// MARK: ARCHIVE
+// // // //
 
 //func nextGen(
 //    sim: Simulation

@@ -28,8 +28,6 @@ struct ContentView: View {
     
     var scene: GameScene {
         let game = GameScene(customizationManager: customizationManager)
-//        game.scaleMode = .aspectFill
-
         return game
     }
     
@@ -149,13 +147,6 @@ struct ContentView: View {
             )
         }
     }
-    
-//    func clearBoard() {
-//        self.customizationManager.playing = false
-//        self.scene.sim.grid = emptyGrid(rows: self.scene.sim.rows, cols: self.scene.sim.cols)
-//        self.scene.sim.liveCells = []
-//        self.scene.grid.wipeGrid()
-//    }
 }
 
 struct ContentViewArchive_Previews: PreviewProvider {
