@@ -11,6 +11,7 @@ import SwiftUI
 
 struct Controller {
     var clearChange: Bool
+    var hideUIChange: Bool
 }
 
 class CustomizationManager: NSObject, ObservableObject {
@@ -29,7 +30,10 @@ class CustomizationManager: NSObject, ObservableObject {
         self.doWrap = false
         self.playing = false
         self.uiOpacity = 1.0
-        self.controller = Controller(clearChange: false)
+        self.controller = Controller(
+            clearChange: false
+            , hideUIChange: false
+        )
     }
     
     override var description: String {
