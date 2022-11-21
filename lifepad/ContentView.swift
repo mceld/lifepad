@@ -18,13 +18,13 @@ import SpriteKit
 struct ContentView: View {
     @StateObject var customizationManager = CustomizationManager()
     
-//    @State private var dragOffset = CGSize.zero
-//    @State private var currentScale = 1.0
-//    @State private var lastScale = 1.0
-//
-//    private let minScale = 1.0
-//    private let maxScale = 4.0
-//    private let zoomSpeed: CGFloat = 0.5
+    @State private var dragOffset = CGSize.zero
+    @State private var currentScale = 1.0
+    @State private var lastScale = 1.0
+
+    private let minScale = 1.0
+    private let maxScale = 4.0
+    private let zoomSpeed: CGFloat = 0.5
     
     var scene: GameScene {
         let game = GameScene(customizationManager: customizationManager)
@@ -37,35 +37,34 @@ struct ContentView: View {
         ZStack { // Overlay controls on grid
             SpriteView(scene: scene)
                 .equatable()
-//                .offset(dragOffset)
-//                .scaleEffect(currentScale)
-//                .gesture(
-//                    DragGesture()
-//                        .onChanged { gesture in
-////                            let newX = max(0, gesture.translation)
-//                            dragOffset = gesture.translation
-//                            print(dragOffset)
-//                        }
-////                        .onEnded({ gesture in
-////                            dragOffset = CGSize.zero
-////                        })
-//                )
-//                .gesture(
-//                    MagnificationGesture()
-//                        .onChanged { amount in
-////                            currentScale = amount - 1
-//                            var deltaScale = amount
-//                            deltaScale = ((deltaScale - 1) * zoomSpeed) + 1
-//                            deltaScale = min(deltaScale, maxScale)
-//                            deltaScale = max(deltaScale, minScale)
-//                            currentScale = deltaScale
-//                        }
-//                        .onEnded { amount in
-//                            lastScale = currentScale
-////                            currentScale = 0
-////                            print(finalScale)
-//                        }
-//                )
+                .offset(dragOffset)
+                .scaleEffect(currentScale)
+                .gesture(
+                    DragGesture()
+                        .onChanged { gesture in
+//                            let newX = max(0, gesture.translation)
+                            dragOffset = gesture.translation
+                        }
+//                        .onEnded({ gesture in
+//                            dragOffset = CGSize.zero
+//                        })
+                )
+                .gesture(
+                    MagnificationGesture()
+                        .onChanged { amount in
+//                            currentScale = amount - 1
+                            var deltaScale = amount
+                            deltaScale = ((deltaScale - 1) * zoomSpeed) + 1
+                            deltaScale = min(deltaScale, maxScale)
+                            deltaScale = max(deltaScale, minScale)
+                            currentScale = deltaScale
+                        }
+                        .onEnded { amount in
+                            lastScale = currentScale
+//                            currentScale = 0
+//                            print(finalScale)
+                        }
+                )
 //                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             HStack { // Control Group
                 
@@ -129,6 +128,14 @@ struct ContentView: View {
                             self.customizationManager.controller.hideUIChange = true
                         }
                     )
+                    
+                    CircleButton(
+                        iconName: "dot.arrowtriangles.up.right.down.left.circle"
+                        , onClick: {
+                            currentScale = 1.0
+                            lastScale = 1.0
+                            dragOffset = CGSize.zero
+                        })
                     
                     CircleButton( // library of configs
                         iconName: "text.book.closed"

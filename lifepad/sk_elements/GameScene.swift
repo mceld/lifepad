@@ -75,13 +75,13 @@ class GameScene: SKScene {
         self.camera?.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         
         // camera settings
-        let panGesture = UIPanGestureRecognizer()
-        panGesture.addTarget(self, action: #selector(handlePan(_:)))
-        to.addGestureRecognizer(panGesture)
-
-        let pinchGesture = UIPinchGestureRecognizer()
-        pinchGesture.addTarget(self, action: #selector(handlePinch(_:)))
-        to.addGestureRecognizer(pinchGesture)
+//        let panGesture = UIPanGestureRecognizer()
+//        panGesture.addTarget(self, action: #selector(handlePan(_:)))
+//        to.addGestureRecognizer(panGesture)
+//
+//        let pinchGesture = UIPinchGestureRecognizer()
+//        pinchGesture.addTarget(self, action: #selector(handlePinch(_:)))
+//        to.addGestureRecognizer(pinchGesture)
         
         // tap to toggle a cell
 //        let tapGesture = UITapGestureRecognizer()
