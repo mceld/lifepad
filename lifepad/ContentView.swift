@@ -36,6 +36,7 @@ struct ContentView: View {
     var body: some View {
         ZStack { // Overlay controls on grid
             SpriteView(scene: scene)
+                .equatable()
 //                .offset(dragOffset)
 //                .scaleEffect(currentScale)
 //                .gesture(
@@ -99,7 +100,7 @@ struct ContentView: View {
                     )
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(5)
+//                .padding(5)
                 
                 // Play, pause, step
                 HStack {
@@ -118,14 +119,14 @@ struct ContentView: View {
                     )
                 }
                 .frame(maxHeight: .infinity, alignment: .bottom)
-                .padding(5)
+//                .padding(5)
                 
                 // hide ui, library
                 VStack {
                     CircleButton( // hide ui
                         iconName: "eye.slash"
                         , onClick: {
-                            self.customizationManager.uiOpacity = 0.0
+                            self.customizationManager.controller.hideUIChange = true
                         }
                     )
                     
@@ -135,7 +136,7 @@ struct ContentView: View {
                     )
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(5)
+//                .padding(5)
                 
             }
             .frame(
@@ -145,7 +146,21 @@ struct ContentView: View {
                 maxHeight: .infinity,
                 alignment: .bottom
             )
+            .opacity(customizationManager.uiOpacity)
         }
+        .onAppear {
+            UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation") // Forcing the rotation to portrait
+            AppDelegate.orientationLock = .portrait // And making sure it stays that way
+        }.onDisappear {
+            AppDelegate.orientationLock = .all // Unlocking the rotation when leaving the view
+        }
+        .statusBarHidden(true)
+    }
+}
+
+extension SpriteView: Equatable {
+    public static func == (lhs: SpriteView, rhs: SpriteView) -> Bool {
+        return true
     }
 }
 

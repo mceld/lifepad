@@ -11,7 +11,6 @@ class GameScene: SKScene {
     let neighborCoords: [(Int, Int)] = makeNeighborCoords() // array of coordinates to check around every cell
     
     var grid: Grid! // area where cells / lines are drawn
-    var sim: Simulation! // holds the computational portion of the simulation
     
     var previousCameraPoint = CGPoint.zero
     var lastCellColor: Color!
@@ -20,12 +19,13 @@ class GameScene: SKScene {
     init(customizationManager: CustomizationManager) {
         
         // set sim and customization manager
-        self.sim = initRandomSim(rows: rows, cols: cols)
         self.customizationManager = customizationManager
+        
+        let initGrid = randomGrid(rows: rows, cols: cols)
         
         // initialize spritekit grid, draw all cells
         grid = Grid(blockSize: blockSize, rows: rows, cols: cols, initCellColor: UIColor(customizationManager.cellColor), initGridColor: UIColor(customizationManager.gridColor))
-        grid.populateGrid(sim: sim, rows: rows, cols: cols)
+        grid.populateGrid(grid: initGrid, rows: rows, cols: cols)
         
         // set initial colors for color updating in sim
         self.lastCellColor = customizationManager.cellColor
@@ -92,17 +92,9 @@ class GameScene: SKScene {
     }
     
 //    @objc func handleTap(_ sender: UITapGestureRecognizer) {
-//        let position = sender.location(in: view)
-//        let node = atPoint(position)
-//        if node == self {
-//            //
-//            print("self")
-//        } else {
-//            let x = size.width / 2 + position.x
-//            let y = size.height / 2 - position.y
-//            let row = Int(floor(x / blockSize))
-//            let col = Int(floor(y / blockSize))
-//            print("\(row) \(col)")
+//        if(customizationManager.uiOpacity < 1.0) {
+//            print("setting opacity")
+//            self.customizationManager.uiOpacity = 1.0
 //        }
 //    }
     
@@ -160,15 +152,13 @@ class GameScene: SKScene {
         // clear the board when a change is received
         if(customizationManager.controller.clearChange) {
             grid.wipeGrid()
-            sim.grid = emptyGrid(rows: sim.rows, cols: sim.cols)
-            sim.liveCells = []
             customizationManager.controller.clearChange = false
         }
         
         // set cell colors if changed
         if(self.lastCellColor != customizationManager.cellColor) {
-            for i in 0..<sim.rows {
-                for j in 0..<sim.cols {
+            for i in 0..<rows {
+                for j in 0..<cols {
                     grid.spriteGrid[i][j].fillColor = UIColor(customizationManager.cellColor)
                 }
             }
@@ -180,15 +170,29 @@ class GameScene: SKScene {
             self.grid.setTexture(color: findLineColor(color: UIColor(customizationManager.gridColor)))
         }
         
-        if(customizationManager.playing && !sim.liveCells.isEmpty) {
+        if(customizationManager.controller.hideUIChange) {
+            customizationManager.uiOpacity = 0.0
+//            for i in 0..<rows {
+//                for j in 0..<cols {
+//                    grid.spriteGrid[i][j].strokeColor = .clear
+//                }
+//            }
+//            grid.texture = gridTexture(blockSize: blockSize, rows: rows, cols: cols, color: UIColor.clear)
+            customizationManager.controller.hideUIChange = false
+        }
+        
+        // // // // simulation running, changes from ui controller computed // // // //
+        
+        if(customizationManager.playing) {
             // calculate next gen
-            sim = nextGen(sim: sim, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
+//            sim = nextGen(sim: sim, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
+            let changedGrid = nextGen(cellGrid: grid.spriteGrid, rows: rows, cols: cols, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
             
             // draw the next gen
-            for i in 0..<sim.rows {
-                for j in 0..<sim.cols {
-                    grid.spriteGrid[i][j].alive = sim.grid[i][j].state
-                    grid.spriteGrid[i][j].fillColor = UIColor(customizationManager.cellColor) // TODO should be moved to a function that simply updates all CellSprite children on the grid
+            for i in 0..<rows {
+                for j in 0..<cols {
+                    grid.spriteGrid[i][j].alive = changedGrid[i][j].state
+//                    grid.spriteGrid[i][j].fillColor = UIColor(customizationManager.cellColor) // TODO should be moved to a function that simply updates all CellSprite children on the grid
                 }
             }
             

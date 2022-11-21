@@ -19,8 +19,9 @@ class CustomizationManager: NSObject, ObservableObject {
     var gridColor: Color
     var doWrap: Bool
     var playing: Bool
-    var uiOpacity: Double
+    @Published var uiOpacity: Double
     
+    var showLibrarySheet: Bool
     var controller: Controller
     
     override init() {
@@ -30,6 +31,7 @@ class CustomizationManager: NSObject, ObservableObject {
         self.doWrap = false
         self.playing = false
         self.uiOpacity = 1.0
+        self.showLibrarySheet = false
         self.controller = Controller(
             clearChange: false
             , hideUIChange: false

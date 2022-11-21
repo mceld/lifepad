@@ -18,21 +18,6 @@ extension Cell: CustomStringConvertible {
     }
 }
 
-class Simulation: NSObject, ObservableObject {
-    var rows: Int
-    var cols: Int
-    var grid: [[Cell]]
-    var liveCells: [Cell]
-    
-    init(rows: Int, cols: Int, grid: [[Cell]], liveCells: [Cell]) {
-        self.rows = rows
-        self.cols = cols
-        self.grid = grid
-        self.liveCells = liveCells
-    }
-    
-}
-
 // Initialize a grid of dead cells length * width in size
 func emptyGrid(rows: Int, cols: Int) -> [[Cell]] {
     var grid: [[Cell]] = []
@@ -50,29 +35,16 @@ func emptyGrid(rows: Int, cols: Int) -> [[Cell]] {
     return grid
 }
 
-func randomizeGrid(sim: Simulation) {
-    for i in 0..<sim.rows {
-        for j in 0..<sim.cols {
+func randomGrid(rows: Int, cols: Int) -> [[Cell]] {
+    var grid = emptyGrid(rows: rows, cols: cols)
+    for i in 0..<rows {
+        for j in 0..<cols {
             if(Int.random(in: 1..<9) == 1) {
-                sim.grid[i][j].state = true
-                sim.liveCells.append(sim.grid[i][j])
+                grid[i][j].state = true
             }
         }
     }
-}
-
-func initRandomSim(rows: Int, cols: Int) -> Simulation {
-    let sim = Simulation(
-        rows: rows
-        , cols: cols
-        , grid: emptyGrid(
-            rows: rows
-            , cols: cols
-        )
-        , liveCells: []
-    )
-    randomizeGrid(sim: sim)
-    return sim
+    return grid
 }
 
 func makeNeighborCoords() -> [(Int, Int)] {
@@ -107,17 +79,15 @@ func determineNeighborIndex(size: Int, num: Int, offset: Int, doWrap: Bool) -> I
 }
 
 func getNeighbors(
-    cell: Cell
-    , sim: Simulation
+    cellRow: Int
+    , cellCol: Int
+    , rows: Int
+    , cols: Int
+    , grid: [[CellSprite]]
     , doWrap: Bool
     , neighborCoords: [(vertical: Int, horizontal: Int)]
-) -> [Cell] {
-    
-    let rows: Int = sim.rows
-    let cols: Int = sim.cols
-    let grid: [[Cell]] = sim.grid
-    
-    var neighbors: [Cell] = []
+) -> [CellSprite] {
+    var neighbors: [CellSprite] = []
     
     // Check all neighbors -> determine if the row or col value exceeds or goes below the max or 0
     // if that's true, check doWrap, add the neighbor at the wrapped coord if it's on
@@ -125,8 +95,8 @@ func getNeighbors(
     
     for coord in neighborCoords {
         
-        let vIndex = determineNeighborIndex(size: rows, num: cell.row, offset: coord.vertical, doWrap: doWrap)
-        let hIndex = determineNeighborIndex(size: cols, num: cell.col, offset: coord.horizontal, doWrap: doWrap)
+        let vIndex = determineNeighborIndex(size: rows, num: cellRow, offset: coord.vertical, doWrap: doWrap)
+        let hIndex = determineNeighborIndex(size: cols, num: cellCol, offset: coord.horizontal, doWrap: doWrap)
         
         // Don't add an off the grid neighbor
         if(vIndex == -1 || hIndex == -1) {
@@ -140,11 +110,11 @@ func getNeighbors(
     return neighbors
 }
 
-func getLiveNeighbors(neighbors: [Cell]) -> Int {
+func getLiveNeighbors(neighbors: [CellSprite]) -> Int {
     var count = 0
     
     for neighbor in neighbors {
-        if(neighbor.state) {
+        if(neighbor.alive) {
             count += 1
         }
     }
@@ -152,63 +122,65 @@ func getLiveNeighbors(neighbors: [Cell]) -> Int {
     return count
 }
 
-func getSalientCells(
-    sim: Simulation
-    , doWrap: Bool
-    , neighborCoords: [(vertical: Int, horizontal: Int)]
-) -> [Cell] {
-    // Get the combination of liveCells and the dead neighbors of liveCells
-    var salientCells = sim.liveCells
-    for cell in sim.liveCells {
-        
-        // find every neighbor
-        let neighbors = getNeighbors(
-            cell: cell
-            , sim: sim
-            , doWrap: doWrap
-            , neighborCoords: neighborCoords
-        )
-        
-        // add only the dead neighbors
-        for neighbor in neighbors {
-            if neighbor.state == false {
-                salientCells.append(neighbor)
-            }
-        }
-    }
-    
-    return salientCells
-}
-
 func nextGen(
-    sim: Simulation
+    cellGrid: [[CellSprite]]
+    , rows: Int
+    , cols: Int
     , doWrap: Bool
     , neighborCoords: [(Int, Int)]
-) -> Simulation {
-    let returnSim = Simulation(rows: sim.rows, cols: sim.cols, grid: emptyGrid(rows: sim.rows, cols: sim.cols), liveCells: [])
-    
-    for i in 0..<sim.rows {
-        for j in 0..<sim.cols {
-            
-            let cell = sim.grid[i][j]
-            let neighbors = getNeighbors(cell: cell, sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
+) -> [[Cell]] {
+    var returnGrid = emptyGrid(rows: rows, cols: cols)
+
+    for i in 0..<rows {
+        for j in 0..<cols {
+
+            let cell = cellGrid[i][j]
+            let neighbors = getNeighbors(cellRow: i, cellCol: j, rows: rows, cols: cols, grid: cellGrid, doWrap: doWrap, neighborCoords: neighborCoords)
             let liveNeighbors = getLiveNeighbors(neighbors: neighbors)
-            
-            if (cell.state) { // live
+
+            if (cell.alive) { // live
                 if(liveNeighbors == 2 || liveNeighbors == 3) {
-                    returnSim.grid[i][j].state = true
-                    returnSim.liveCells.append(returnSim.grid[i][j])
+                    returnGrid[i][j].state = true
                 }
             } else { // dead
                 if(liveNeighbors == 3) {
-                    returnSim.grid[i][j].state = true
-                    returnSim.liveCells.append(returnSim.grid[i][j])
+                    returnGrid[i][j].state = true
                 }
             }
         }
     }
-    return returnSim
+    return returnGrid
 }
+
+//func nextGen(
+//    sim: Simulation
+//    , doWrap: Bool
+//    , neighborCoords: [(Int, Int)]
+//) -> Simulation {
+//    let returnSim = Simulation(rows: sim.rows, cols: sim.cols, grid: emptyGrid(rows: sim.rows, cols: sim.cols), liveCells: [])
+//
+//    for i in 0..<sim.rows {
+//        for j in 0..<sim.cols {
+//
+//            let cell = sim.grid[i][j]
+//            let neighbors = getNeighbors(cell: cell, sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
+//            let liveNeighbors = getLiveNeighbors(neighbors: neighbors)
+//
+//            if (cell.state) { // live
+//                if(liveNeighbors == 2 || liveNeighbors == 3) {
+//                    returnSim.grid[i][j].state = true
+//                    returnSim.liveCells.append(returnSim.grid[i][j])
+//                }
+//            } else { // dead
+//                if(liveNeighbors == 3) {
+//                    returnSim.grid[i][j].state = true
+//                    returnSim.liveCells.append(returnSim.grid[i][j])
+//                }
+//            }
+//        }
+//    }
+//    return returnSim
+//}
 
 // // // //
 // MARK: ARCHIVE
@@ -280,4 +252,46 @@ func nextGen(
 //
 //        return result
 //    }
+//}
+
+//func getSalientCells(
+//    sim: Simulation
+//    , doWrap: Bool
+//    , neighborCoords: [(vertical: Int, horizontal: Int)]
+//) -> [Cell] {
+//    // Get the combination of liveCells and the dead neighbors of liveCells
+//    var salientCells = sim.liveCells
+//    for cell in sim.liveCells {
+//
+//        // find every neighbor
+//        let neighbors = getNeighbors(
+//            cell: cell
+//            , sim: sim
+//            , doWrap: doWrap
+//            , neighborCoords: neighborCoords
+//        )
+//
+//        // add only the dead neighbors
+//        for neighbor in neighbors {
+//            if neighbor.state == false {
+//                salientCells.append(neighbor)
+//            }
+//        }
+//    }
+//
+//    return salientCells
+//}
+//class Simulation: NSObject, ObservableObject {
+//    var rows: Int
+//    var cols: Int
+//    var grid: [[Cell]]
+//    var liveCells: [Cell]
+//
+//    init(rows: Int, cols: Int, grid: [[Cell]], liveCells: [Cell]) {
+//        self.rows = rows
+//        self.cols = cols
+//        self.grid = grid
+//        self.liveCells = liveCells
+//    }
+//
 //}

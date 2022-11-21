@@ -55,8 +55,6 @@ class Grid: SKSpriteNode {
         self.isUserInteractionEnabled = true
     }
 
-
-
     func gridPosition(row:Int, col:Int) -> CGPoint {
         // Center point is the midpoint on both axes, adjust the display location
         // based on this center assumption
@@ -73,19 +71,20 @@ class Grid: SKSpriteNode {
             return
         }
         else {
+            // turn ui back on if needed
+            if((self.parent as! GameScene).customizationManager.uiOpacity == 0.0) {
+                (self.parent as! GameScene).customizationManager.uiOpacity = 1.0
+                return
+            }
+            
+            // parent is a GameScene
             if(!(self.parent as! GameScene).customizationManager.playing) {
                 let x = size.width / 2 + position.x
                 let y = size.height / 2 - position.y
                 let row = Int(floor(y / blockSize))
                 let col = Int(floor(x / blockSize))
                 
-                print("rows \(spriteGrid.count)")
-                print("cols \(spriteGrid[0].count)")
-                
-                
                 self.spriteGrid[row][col].alive.toggle()
-                
-                print("\(row) \(col)")
             }
         }
     }
@@ -96,7 +95,7 @@ class Grid: SKSpriteNode {
     
     // Fills the grid with minimum number of sprites
     // Acts like an init draw
-    func populateGrid(sim: Simulation, rows: Int, cols: Int) {
+    func populateGrid(grid: [[Cell]], rows: Int, cols: Int) {
         var tempGrid: [[CellSprite]] = []
         
         for i in 0..<rows {
@@ -107,7 +106,7 @@ class Grid: SKSpriteNode {
                 
                 let cellSprite = CellSprite(size: 10.0, color: cellColor)
                 cellSprite.position = gridPosition(row: i, col: j)
-                cellSprite.alive = sim.grid[i][j].state
+                cellSprite.alive = grid[i][j].state
                 addChild(cellSprite)
                 tempRow.append(cellSprite)
                 
