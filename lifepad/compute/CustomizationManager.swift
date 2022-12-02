@@ -20,6 +20,7 @@ class CustomizationManager: NSObject, ObservableObject {
     var doWrap: Bool
     var playing: Bool
     @Published var uiOpacity: Double
+    @Published var gestureActive: Bool
     
     var showLibrarySheet: Bool
     var controller: Controller
@@ -31,6 +32,7 @@ class CustomizationManager: NSObject, ObservableObject {
         self.doWrap = false
         self.playing = false
         self.uiOpacity = 1.0
+        self.gestureActive = false
         self.showLibrarySheet = false
         self.controller = Controller(
             clearChange: false

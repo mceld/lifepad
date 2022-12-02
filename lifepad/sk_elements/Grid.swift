@@ -78,7 +78,7 @@ class Grid: SKSpriteNode {
             }
             
             // parent is a GameScene
-            if(!(self.parent as! GameScene).customizationManager.playing) {
+            if(!(self.parent as! GameScene).customizationManager.playing && !(self.parent as! GameScene).customizationManager.gestureActive) {
                 let x = size.width / 2 + position.x
                 let y = size.height / 2 - position.y
                 let row = Int(floor(y / blockSize))
