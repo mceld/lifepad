@@ -91,6 +91,50 @@ class Grid: SKSpriteNode {
         self.texture = gridTexture(blockSize: blockSize, rows: rows, cols: cols, color: color)
     }
     
+    func presetDims(preset: [[Int32]]) -> (rows: Int, cols: Int) {
+        // find the max for both the row and col val and return as dimensions
+        var rowMax: Int32 = 0
+        var colMax: Int32 = 0
+        
+        for pair in preset {
+            if pair[0] > rowMax {
+                rowMax = pair[0]
+            }
+            
+            if pair[1] > colMax {
+                colMax = pair[1]
+            }
+        }
+        
+        return (rows: Int(rowMax), cols: Int(colMax))
+    }
+    
+    func loadPreset(preset: [[Int32]]) {
+        var cells: [Cell] = []
+        let dims: (rows: Int, cols: Int) = presetDims(preset: preset)
+        
+        if dims.rows > rows || dims.cols > cols {
+            return
+        }
+        
+        for pair in preset {
+            cells.append(Cell(state: true, row: Int(pair[0]), col: Int(pair[1])))
+        }
+        
+        wipeGrid()
+        
+        var originRow = Int(rows / 2) - Int(dims.rows / 2)
+        var originCol = Int(cols / 2) - Int(dims.cols / 2)
+        
+        let offsetRow = max(min(originRow, rows), 0)
+        let offsetCol = max(min(originCol, cols), 0)
+        
+        for cell in cells {
+            spriteGrid[offsetRow + cell.row][offsetCol + cell.col].alive = true
+        }
+        
+    }
+    
     // Fills the grid with minimum number of sprites
     // Acts like an init draw
     func populateGrid(grid: [[Cell]], rows: Int, cols: Int) {

@@ -155,6 +155,12 @@ class GameScene: SKScene {
             customizationManager.controller.clearChange = false
         }
         
+        // load a preset
+        if(customizationManager.controller.loadPreset != nil) {
+            grid.loadPreset(preset: customizationManager.controller.loadPreset!)
+            customizationManager.controller.loadPreset = nil
+        }
+        
         // set cell colors if changed
         if(self.lastCellColor != customizationManager.cellColor) {
             for i in 0..<rows {

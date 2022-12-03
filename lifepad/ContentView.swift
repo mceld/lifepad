@@ -167,7 +167,7 @@ struct ContentView: View {
                         }
                     )
                     .sheet(isPresented: $showLibrary) {
-                        Library(basics: basic_presets.data, advanced: advanced_presets.data, showing: $showLibrary)
+                        Library(basics: basic_presets.data, advanced: advanced_presets.data, showing: $showLibrary, controllerPreset: $customizationManager.controller.loadPreset)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)

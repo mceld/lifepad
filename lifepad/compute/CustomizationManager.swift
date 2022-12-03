@@ -12,6 +12,7 @@ import SwiftUI
 struct Controller {
     var clearChange: Bool
     var hideUIChange: Bool
+    var loadPreset: [[Int32]]?
 }
 
 class CustomizationManager: NSObject, ObservableObject {
@@ -20,7 +21,7 @@ class CustomizationManager: NSObject, ObservableObject {
     @Published var doWrap: Bool
     @Published var playing: Bool
     @Published var uiOpacity: Double
-    @Published var gestureActive: Bool
+    @Published var gestureActive: Bool // ??
     
     var showLibrarySheet: Bool
     var controller: Controller
@@ -37,6 +38,7 @@ class CustomizationManager: NSObject, ObservableObject {
         self.controller = Controller(
             clearChange: false
             , hideUIChange: false
+            , loadPreset: nil
         )
     }
     

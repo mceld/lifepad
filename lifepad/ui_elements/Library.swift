@@ -3,14 +3,16 @@
 //  lifepad
 //
 
+// most presets come from https://conwaylife.com/wiki/
+
 import SwiftUI
 
 struct Library: View {
     // init environment object thats a list of preset
     var basics: [Preset]
     var advanced: [Preset]
-//    var hideSheet: () -> Void
     @Binding var showing: Bool
+    @Binding var controllerPreset: [[Int32]]?
     
     var body: some View {
         if basics.count != 0 && advanced.count != 0  {
@@ -23,6 +25,7 @@ struct Library: View {
                                     { _ in
                                         // launch the preset
                                         showing = false
+                                        controllerPreset = preset.coords
                                     }
                                 )
                             )
@@ -37,6 +40,7 @@ struct Library: View {
                                     { _ in
                                         // launch the preset
                                         showing = false
+                                        controllerPreset = preset.coords
                                     }
                                 )
                             )
