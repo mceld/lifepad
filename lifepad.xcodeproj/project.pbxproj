@@ -27,8 +27,9 @@
 		62CE3427293A9E7100AB0C76 /* PresetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CE3426293A9E7100AB0C76 /* PresetCard.swift */; };
 		62FFE540293BFF71009C95B4 /* ship_presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE53F293BFF71009C95B4 /* ship_presets.plist */; };
 		62FFE542293BFFB6009C95B4 /* gen_coords.py in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE541293BFFB6009C95B4 /* gen_coords.py */; };
-		62FFE544293C1616009C95B4 /* oscillator_presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE543293C1616009C95B4 /* oscillator_presets.plist */; };
-		62FFE546293C1641009C95B4 /* misc_presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE545293C1641009C95B4 /* misc_presets.plist */; };
+		62FFE548293C1754009C95B4 /* shipsplist.out in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE547293C1754009C95B4 /* shipsplist.out */; };
+		62FFE54A293C177E009C95B4 /* oscplist.out in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE549293C177E009C95B4 /* oscplist.out */; };
+		62FFE54C293C17E0009C95B4 /* miscplist.out in Resources */ = {isa = PBXBuildFile; fileRef = 62FFE54B293C17E0009C95B4 /* miscplist.out */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,8 +54,9 @@
 		62CE3426293A9E7100AB0C76 /* PresetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetCard.swift; sourceTree = "<group>"; };
 		62FFE53F293BFF71009C95B4 /* ship_presets.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = ship_presets.plist; path = lifepad/ship_presets.plist; sourceTree = "<group>"; };
 		62FFE541293BFFB6009C95B4 /* gen_coords.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = gen_coords.py; sourceTree = "<group>"; };
-		62FFE543293C1616009C95B4 /* oscillator_presets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = oscillator_presets.plist; sourceTree = "<group>"; };
-		62FFE545293C1641009C95B4 /* misc_presets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = misc_presets.plist; sourceTree = "<group>"; };
+		62FFE547293C1754009C95B4 /* shipsplist.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = shipsplist.out; path = coords/shipsplist.out; sourceTree = "<group>"; };
+		62FFE549293C177E009C95B4 /* oscplist.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = oscplist.out; path = coords/oscplist.out; sourceTree = "<group>"; };
+		62FFE54B293C17E0009C95B4 /* miscplist.out */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = miscplist.out; path = coords/miscplist.out; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,8 +73,9 @@
 		62241B732915947D00C6C7B6 = {
 			isa = PBXGroup;
 			children = (
-				62FFE545293C1641009C95B4 /* misc_presets.plist */,
-				62FFE543293C1616009C95B4 /* oscillator_presets.plist */,
+				62FFE54B293C17E0009C95B4 /* miscplist.out */,
+				62FFE549293C177E009C95B4 /* oscplist.out */,
+				62FFE547293C1754009C95B4 /* shipsplist.out */,
 				62FFE541293BFFB6009C95B4 /* gen_coords.py */,
 				62FFE53F293BFF71009C95B4 /* ship_presets.plist */,
 				62A96804291B40D90012D1D8 /* LifepadApp.swift */,
@@ -205,13 +208,14 @@
 			files = (
 				623AF815293AF0FA00DE23C9 /* basic_presets.plist in Resources */,
 				62241B8D2915947E00C6C7B6 /* Assets.xcassets in Resources */,
-				62FFE546293C1641009C95B4 /* misc_presets.plist in Resources */,
 				62A96818291B47550012D1D8 /* Main.storyboard in Resources */,
-				62FFE544293C1616009C95B4 /* oscillator_presets.plist in Resources */,
+				62FFE548293C1754009C95B4 /* shipsplist.out in Resources */,
 				62FFE540293BFF71009C95B4 /* ship_presets.plist in Resources */,
+				62FFE54A293C177E009C95B4 /* oscplist.out in Resources */,
 				6244787C291BE75E00407FE2 /* GameScene.sks in Resources */,
 				62FFE542293BFFB6009C95B4 /* gen_coords.py in Resources */,
 				6244787B291BE75E00407FE2 /* Actions.sks in Resources */,
+				62FFE54C293C17E0009C95B4 /* miscplist.out in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
