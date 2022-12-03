@@ -18,7 +18,7 @@ class CustomizationManager: NSObject, ObservableObject {
     var cellColor: Color
     var gridColor: Color
     var doWrap: Bool
-    var playing: Bool
+    @Published var playing: Bool
     @Published var uiOpacity: Double
     @Published var gestureActive: Bool
     

@@ -12,8 +12,9 @@
 
 // TODO
 // library + sheet
+// fix fitting of ui to screen
 // next / previous and return to last play
-// Speed controls
+// Speed control
 // Color controls, pane with color picker
 
 // improvements to hiding UI / making grid and sprite outline clear
@@ -26,7 +27,8 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @EnvironmentObject var presets: Presets
+    @EnvironmentObject var basic_presets: Presets
+    @EnvironmentObject var advanced_presets: Presets
     @StateObject var customizationManager = CustomizationManager()
     
     // dragging
@@ -39,6 +41,7 @@ struct ContentView: View {
     private let minScale = 1.0
     private let maxScale = 4.0
     
+    // library sheet
     @State private var showLibrary = false
     
     var scene: GameScene {
@@ -60,25 +63,25 @@ struct ContentView: View {
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
-                            customizationManager.gestureActive = true
+//                            customizationManager.gestureActive = true
                             dragOffset = gesture.translation
                         }
                         .onEnded({ gesture in
                             position.width += gesture.translation.width
                             position.height += gesture.translation.height
                             dragOffset = CGSize.zero
-                            customizationManager.gestureActive = false
+//                            customizationManager.gestureActive = false
                         })
                 )
                 .gesture(
                     MagnificationGesture()
                         .updating($pinchValue, body: { (value, state, _) in
-                            customizationManager.gestureActive = true
+//                            customizationManager.gestureActive = true
                             state = value
                         })
                         .onEnded({ (value) in
                             currentScale = constrainZoom(magnification: value)
-                            customizationManager.gestureActive = false
+//                            customizationManager.gestureActive = false
                         })
                 )
 //                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
@@ -110,6 +113,7 @@ struct ContentView: View {
                     CircleButton( // clear grid
                         iconName: "trash"
                         , onClick: {
+                            self.customizationManager.playing = false
                             self.customizationManager.controller.clearChange = true
                         }
                     )
@@ -160,7 +164,7 @@ struct ContentView: View {
                         }
                     )
                     .sheet(isPresented: $showLibrary) {
-                        Library(presets: presets.data, showing: $showLibrary)
+                        Library(basics: basic_presets.data, advanced: advanced_presets.data, showing: $showLibrary)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)

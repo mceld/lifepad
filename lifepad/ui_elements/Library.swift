@@ -7,25 +7,45 @@ import SwiftUI
 
 struct Library: View {
     // init environment object thats a list of preset
-    var presets: [Preset]
+    var basics: [Preset]
+    var advanced: [Preset]
+//    var hideSheet: () -> Void
     @Binding var showing: Bool
     
     var body: some View {
-//        ScrollView {
-//            Text("Library")
-//                .font(.system(.title))
-//                .fontWeight(.bold)
-        
-            if presets.count != 0 {
-                List(presets, id: \.self) { preset in
-                    PresetCard(libraryShowing: $showing, preset: preset)
+        if basics.count != 0 && advanced.count != 0  {
+            List {
+                Section(header: Text("Basics")) {
+                    ForEach(basics, id: \.self) { preset in
+                        PresetCard(preset: preset)
+                            .gesture(TapGesture()
+                                .onEnded(
+                                    { _ in
+                                        // launch the preset
+                                        showing = false
+                                    }
+                                )
+                            )
+                    }
                 }
-            } else {
-                Text("No presets to show.")
+                
+                Section(header: Text("Advanced")) {
+                    ForEach(advanced) { preset in
+                        PresetCard(preset: preset)
+                            .gesture(TapGesture()
+                                .onEnded(
+                                    { _ in
+                                        // launch the preset
+                                        showing = false
+                                    }
+                                )
+                            )
+                    }
+                }
             }
-//        }
-//        .padding(20)
-        
+        } else {
+            Text("No presets to show.")
+        }
     }
 }
 

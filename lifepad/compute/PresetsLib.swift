@@ -17,10 +17,11 @@ struct Preset: Identifiable, Hashable {
 
 class Presets: ObservableObject {
     
+//    var filename: String
     @Published var data: [Preset] = []
     
-    init() {
-        if let path = Bundle.main.path(forResource: "presets", ofType: "plist") {
+    init(filename: String) {
+        if let path = Bundle.main.path(forResource: filename, ofType: "plist") {
             do {
                 let data = try Data(contentsOf: URL(fileURLWithPath: path))
                 let tempDict = try PropertyListSerialization.propertyList(from: data, format: nil) as! [String:Any]

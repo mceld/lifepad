@@ -14,15 +14,14 @@ struct ControlBlock: View {
     var lightColor: Color = Color(red: 1.0, green: 1.0, blue: 1.0)
     
     @State private var playPauseIcon: String = "play"
-    
     @Binding var playing: Bool
     
     func togglePlaying() {
         if(playing) {
-            playPauseIcon = "play"
+//            playPauseIcon = "play"
             playing = false
         } else {
-            playPauseIcon = "pause"
+//            playPauseIcon = "pause"
             playing = true
         }
     }
@@ -40,7 +39,7 @@ struct ControlBlock: View {
             Button(action: {
                 togglePlaying()
             }) {
-                Image(systemName: playPauseIcon)
+                Image(systemName: playing ? "pause" : "play")
                     .frame(width: 50, height: 50)
                     .font(.title)
                     .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
