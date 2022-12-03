@@ -2,8 +2,6 @@
 //  Grid.swift
 //  lifepad_game
 //
-//  Created by GCCISAdmin on 11/3/22.
-//
 
 // SKSpriteNode that should render the grid based on the simulation state
 

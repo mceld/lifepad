@@ -2,8 +2,6 @@
 //  LibraryPreset.swift
 //  lifepad
 //
-//  Created by GCCISAdmin on 12/2/22.
-//
 
 import SwiftUI
 
