@@ -26,7 +26,6 @@
 		62A96818291B47550012D1D8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 62A96817291B47550012D1D8 /* Main.storyboard */; };
 		62CE3425293A9D8B00AB0C76 /* Library.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CE3424293A9D8B00AB0C76 /* Library.swift */; };
 		62CE3427293A9E7100AB0C76 /* PresetCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62CE3426293A9E7100AB0C76 /* PresetCard.swift */; };
-		62FFE53E293BD79E009C95B4 /* ClearButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62FFE53D293BD79E009C95B4 /* ClearButton.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,7 +49,6 @@
 		62A96817291B47550012D1D8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		62CE3424293A9D8B00AB0C76 /* Library.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Library.swift; sourceTree = "<group>"; };
 		62CE3426293A9E7100AB0C76 /* PresetCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetCard.swift; sourceTree = "<group>"; };
-		62FFE53D293BD79E009C95B4 /* ClearButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClearButton.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,7 +111,6 @@
 				6202D85F292982E7000D34AD /* WrapButton.swift */,
 				62CE3424293A9D8B00AB0C76 /* Library.swift */,
 				62CE3426293A9E7100AB0C76 /* PresetCard.swift */,
-				62FFE53D293BD79E009C95B4 /* ClearButton.swift */,
 			);
 			path = ui_elements;
 			sourceTree = "<group>";
@@ -219,7 +216,6 @@
 				62241B9C2915950E00C6C7B6 /* ContentView.swift in Sources */,
 				62CE3425293A9D8B00AB0C76 /* Library.swift in Sources */,
 				620CE780291EC313008448A6 /* CustomizationManager.swift in Sources */,
-				62FFE53E293BD79E009C95B4 /* ClearButton.swift in Sources */,
 				62241B9F291597A600C6C7B6 /* Grid.swift in Sources */,
 				62CE3427293A9E7100AB0C76 /* PresetCard.swift in Sources */,
 				6202D860292982E7000D34AD /* WrapButton.swift in Sources */,

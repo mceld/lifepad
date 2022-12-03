@@ -106,8 +106,11 @@ struct ContentView: View {
                     ColorPicker("", selection: $customizationManager.cellColor)
                     ColorPicker("", selection: $customizationManager.gridColor)
                     
-                    WrapButton( // wrap grid
-                        wrap: $customizationManager.doWrap
+                    CircleButton(
+                        iconName: customizationManager.doWrap ? "infinity" : "lock"
+                        , onClick: {
+                            self.customizationManager.doWrap.toggle()
+                        }
                     )
                     
                     CircleButton( // clear grid
