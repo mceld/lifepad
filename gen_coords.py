@@ -18,44 +18,57 @@ def coords_to_string(coord):
 
 
 def main():
-    if len(sys.argv) != 5:
-        print("wrong args")
-        return
-
-    name = sys.argv[1]
-    description = sys.argv[2]
-    image = sys.argv[3]
-    coords_file = sys.argv[4]
-
-    coords = []
-
-    with open(coords_file) as f:
-        for line in f:
-            split = line.split()
-            coords.append([split[0], split[1]])
-            
-            
-    coord_string = ""
-    for coord in coords:
-        coord_string += coords_to_string(coord)
-        
-        
-    string = '''
-    <dict>
-        <key>name</key>
-        <string>{0}</string>
-        <key>description</key>
-        <string>{1}</string>
-        <key>image</key>
-        <string>{2}</string>
-        <key>coords</key>
-        <array>
-        {3}
-        </array>
-    </dict>'''.format(name, description, image, coord_string)
+    filename = sys.argv[1]
+    jobs = []
     
-    with open("coord.out", "w") as g:
-        g.write(string)
+    with open(filename) as jobsfile:
+        for line in jobsfile:
+            job_fields = []
+            split = line.strip().split("\"")
+            for sp in split:
+                if sp == " " or sp == "":
+                    continue
+                job_fields.append(sp)
+                
+            print(job_fields)
+            jobs.append(job_fields)
+    
+    for job in jobs:
+        name = job[0]
+        description = job[1]
+        image = job[2]
+        coords_file = job[3]
+
+        coords = []
+
+        with open(coords_file) as f:
+            for line in f:
+                split = line.split()
+                coords.append([split[0], split[1]])
+                
+                
+        coord_string = ""
+        for coord in coords:
+            coord_string += coords_to_string(coord)
+            
+            
+        string = '''
+        <dict>
+            <key>name</key>
+            <string>{0}</string>
+            <key>description</key>
+            <string>{1}</string>
+            <key>image</key>
+            <string>{2}</string>
+            <key>coords</key>
+            <array>
+            {3}
+            </array>
+        </dict>
+        '''.format(name, description, image, coord_string)
+        
+        with open(coords_file.split(".")[0] + ".out", "w") as g:
+            g.write(string)
 
 if __name__ == "__main__":
     main()
