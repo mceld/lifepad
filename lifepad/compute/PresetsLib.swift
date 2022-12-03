@@ -7,9 +7,12 @@
 
 import Foundation
 
-struct Preset {
+struct Preset: Identifiable, Hashable {
+    var id: UUID = UUID()
     var name: String
-    var coords: [[Int]]
+    var description: String
+    var image: String
+    var coords: [[Int32]]
 }
 
 class Presets: ObservableObject {
@@ -28,7 +31,9 @@ class Presets: ObservableObject {
                     tempPresets.append(
                         Preset(
                             name: dict["name"] as! String
-                            , coords: dict["coords"] as! [[Int]]
+                            , description: dict["description"] as! String
+                            , image: dict["image"] as! String
+                            , coords: dict["coords"] as! [[Int32]]
                         )
                     )
                 }

@@ -7,6 +7,10 @@
 		<dict>
 			<key>name</key>
 			<string>Glider</string>
+			<key>description</key>
+			<string>A basic flying structure</string>
+			<key>image</key>
+			<string>glider</string>
 			<key>coords</key>
 			<array>
 				<array>
@@ -14,7 +18,7 @@
 					<integer>1</integer>
 				</array>
 				<array>
-					<string>1</string>
+					<integer>1</integer>
 					<integer>2</integer>
 				</array>
 				<array>
@@ -31,6 +35,111 @@
 				</array>
 			</array>
 		</dict>
+        <dict>
+            <key>name</key>
+            <string>Seed</string>
+            <key>description</key>
+            <string>Builds a small city</string>
+            <key>image</key>
+            <string>seed</string>
+            <key>coords</key>
+            <array>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>0</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>2</integer>
+                </array>
+                <array>
+                    <integer>2</integer>
+                    <integer>0</integer>
+                </array>
+                <array>
+                    <integer>2</integer>
+                    <integer>2</integer>
+                </array>
+                <array>
+                    <integer>3</integer>
+                    <integer>1</integer>
+                </array>
+            </array>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>Toad</string>
+            <key>description</key>
+            <string>One of many blinkers</string>
+            <key>image</key>
+            <string>toad</string>
+            <key>coords</key>
+            <array>
+                <array>
+                    <integer>0</integer>
+                    <integer>2</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>0</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>3</integer>
+                </array>
+                <array>
+                    <integer>2</integer>
+                    <integer>0</integer>
+                </array>
+                <array>
+                    <integer>2</integer>
+                    <integer>3</integer>
+                </array>
+                <array>
+                    <integer>3</integer>
+                    <integer>1</integer>
+                </array>
+            </array>
+        </dict>
+        <dict>
+            <key>name</key>
+            <string>R-Pentomino</string>
+            <key>description</key>
+            <string>Lasts over 1100 generations</string>
+            <key>image</key>
+            <string>r_pentomino</string>
+            <key>coords</key>
+            <array>
+                <array>
+                    <integer>0</integer>
+                    <integer>1</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>0</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>1</integer>
+                </array>
+                <array>
+                    <integer>1</integer>
+                    <integer>2</integer>
+                </array>
+                <array>
+                    <integer>2</integer>
+                    <integer>0</integer>
+                </array>
+            </array>
+        </dict>
 	</array>
 </dict>
 </plist>

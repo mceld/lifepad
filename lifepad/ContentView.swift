@@ -26,6 +26,7 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
+    @EnvironmentObject var presets: Presets
     @StateObject var customizationManager = CustomizationManager()
     
     // dragging
@@ -79,25 +80,6 @@ struct ContentView: View {
                             currentScale = constrainZoom(magnification: value)
                             customizationManager.gestureActive = false
                         })
-                    
-//                        .onChanged { amount in
-////                            currentScale = amount - 1
-////                            var deltaScale = amount
-//                            let deltaScale = ((amount - 1) * zoomSpeed) + 1 / lastScale
-//                            lastScale = deltaScale
-////                            deltaScale = min(deltaScale, maxScale)
-////                            deltaScale = max(deltaScale, minScale)
-//                            let changedScale = deltaScale * lastScale
-//
-//                            currentScale = min(changedScale, maxScale)
-//                            currentScale = max(changedScale, minScale)
-//                        }
-//                        .onEnded { amount in
-////                            lastScale = currentScale
-//                            lastScale = 1.0
-////                            currentScale = 0
-////                            print(finalScale)
-//                        }
                 )
 //                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             HStack { // Control Group
@@ -178,7 +160,7 @@ struct ContentView: View {
                         }
                     )
                     .sheet(isPresented: $showLibrary) {
-                        Library(showing: $showLibrary)
+                        Library(presets: presets.data, showing: $showLibrary)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
