@@ -28,7 +28,9 @@ import SpriteKit
 
 struct ContentView: View {
     @EnvironmentObject var basic_presets: Presets
-    @EnvironmentObject var advanced_presets: Presets
+    @EnvironmentObject var ship_presets: Presets
+    @EnvironmentObject var oscillator_presets: Presets
+    @EnvironmentObject var misc_presets: Presets
     @StateObject var customizationManager = CustomizationManager()
     
     // dragging
@@ -167,7 +169,7 @@ struct ContentView: View {
                         }
                     )
                     .sheet(isPresented: $showLibrary) {
-                        Library(basics: basic_presets.data, advanced: advanced_presets.data, showing: $showLibrary, controllerPreset: $customizationManager.controller.loadPreset)
+                        Library(basics: basic_presets.data, ships: ship_presets.data, oscillators: oscillator_presets.data, misc: misc_presets.data, showing: $showLibrary, controllerPreset: $customizationManager.controller.loadPreset)
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)

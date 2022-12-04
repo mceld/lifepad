@@ -8,13 +8,17 @@ struct LifepadApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate // preventing rotation
     
     var basic_presets = Presets(filename: "basic_presets")
-    var advanced_presets = Presets(filename: "basic_presets")
+    var ship_presets = Presets(filename: "ship_presets")
+    var oscillator_presets = Presets(filename: "oscillator_presets")
+    var misc_presets = Presets(filename: "misc_presets")
     
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environmentObject(basic_presets)
-                .environmentObject(advanced_presets)
+                .environmentObject(ship_presets)
+                .environmentObject(oscillator_presets)
+                .environmentObject(misc_presets)
         }
     }
 }
