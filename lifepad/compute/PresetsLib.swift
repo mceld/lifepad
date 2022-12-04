@@ -1,10 +1,3 @@
-//
-//  PresetsLib.swift
-//  lifepad
-//
-//  Created by GCCISAdmin on 12/2/22.
-//
-
 import Foundation
 
 struct Preset: Identifiable, Hashable {
@@ -15,9 +8,22 @@ struct Preset: Identifiable, Hashable {
     var coords: [[Int32]]
 }
 
-class Presets: ObservableObject {
+class PresetsModel: ObservableObject {
+    @Published var basics: Presets
+    @Published var ships: Presets
+    @Published var oscillators: Presets
+    @Published var misc: Presets
     
-//    var filename: String
+    init(basicsFile: String, shipsFile: String, oscFile: String, miscFile: String) {
+        self.basics = Presets(filename: basicsFile)
+        self.ships = Presets(filename: shipsFile)
+        self.oscillators = Presets(filename: oscFile)
+        self.misc = Presets(filename: miscFile)
+    }
+}
+
+class Presets {
+    
     @Published var data: [Preset] = []
     
     init(filename: String) {

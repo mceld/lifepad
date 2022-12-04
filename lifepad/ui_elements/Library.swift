@@ -1,14 +1,7 @@
-//
-//  Library.swift
-//  lifepad
-//
-
 // most presets come from https://conwaylife.com/wiki/
-
 import SwiftUI
 
 struct Library: View {
-    // init environment object thats a list of preset
     var basics: [Preset]
     var ships: [Preset]
     var oscillators: [Preset]
@@ -25,14 +18,14 @@ struct Library: View {
         {
             List {
                 Section(header: Text("Basics")) {
-                    ForEach(basics, id: \.self) { preset in
-                        PresetCard(preset: preset)
+                    ForEach(basics, id: \.self) { basic in
+                        PresetCard(preset: basic)
                             .gesture(TapGesture()
                                 .onEnded(
                                     { _ in
                                         // launch the preset
                                         showing = false
-                                        controllerPreset = preset.coords
+                                        controllerPreset = basic.coords
                                     }
                                 )
                             )
@@ -40,14 +33,14 @@ struct Library: View {
                 }
                 
                 Section(header: Text("Ships")) {
-                    ForEach(ships) { preset in
-                        PresetCard(preset: preset)
+                    ForEach(ships, id: \.self) { ship in
+                        PresetCard(preset: ship)
                             .gesture(TapGesture()
                                 .onEnded(
                                     { _ in
                                         // launch the preset
                                         showing = false
-                                        controllerPreset = preset.coords
+                                        controllerPreset = ship.coords
                                     }
                                 )
                             )
@@ -55,14 +48,15 @@ struct Library: View {
                 }
                 
                 Section(header: Text("Oscillators")) {
-                    ForEach(oscillators) { preset in
-                        PresetCard(preset: preset)
+                    ForEach(oscillators, id: \.self) { osc in
+                        PresetCard(preset: osc)
                             .gesture(TapGesture()
                                 .onEnded(
                                     { _ in
                                         // launch the preset
                                         showing = false
-                                        controllerPreset = preset.coords
+                                        controllerPreset = osc.coords
+                                        print(osc.name)
                                     }
                                 )
                             )
@@ -70,14 +64,14 @@ struct Library: View {
                 }
                 
                 Section(header: Text("Miscellaneous")) {
-                    ForEach(misc) { preset in
-                        PresetCard(preset: preset)
+                    ForEach(misc, id: \.self) { misc in
+                        PresetCard(preset: misc)
                             .gesture(TapGesture()
                                 .onEnded(
                                     { _ in
                                         // launch the preset
                                         showing = false
-                                        controllerPreset = preset.coords
+                                        controllerPreset = misc.coords
                                     }
                                 )
                             )

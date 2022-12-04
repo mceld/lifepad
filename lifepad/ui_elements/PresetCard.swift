@@ -1,8 +1,3 @@
-//
-//  LibraryPreset.swift
-//  lifepad
-//
-
 import SwiftUI
 
 struct PresetCard: View {

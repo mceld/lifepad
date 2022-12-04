@@ -1,10 +1,3 @@
-//
-//  ControlBlock.swift
-//  lifepad
-//
-//  Created by GCCISAdmin on 11/11/22.
-//
-
 import SwiftUI
 
 struct ControlBlock: View {

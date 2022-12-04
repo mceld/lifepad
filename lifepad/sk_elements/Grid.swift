@@ -1,8 +1,3 @@
-//
-//  Grid.swift
-//  lifepad_game
-//
-
 // SKSpriteNode that should render the grid based on the simulation state
 
 import Foundation
@@ -123,8 +118,8 @@ class Grid: SKSpriteNode {
         
         wipeGrid()
         
-        var originRow = Int(rows / 2) - Int(dims.rows / 2)
-        var originCol = Int(cols / 2) - Int(dims.cols / 2)
+        let originRow = Int(rows / 2) - Int(dims.rows / 2)
+        let originCol = Int(cols / 2) - Int(dims.cols / 2)
         
         let offsetRow = max(min(originRow, rows), 0)
         let offsetCol = max(min(originCol, cols), 0)

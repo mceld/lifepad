@@ -10,27 +10,30 @@
 // https://www.youtube.com/watch?v=6MHoN6mdfB0&ab_channel=DevTechie // constraining zoom
 
 
+/////////////////////////
 // TODO
-// library + sheet
 // fix fitting of ui to screen
 // next / previous and return to last play
 // Speed control
 // Color controls, pane with color picker
 
+
+
 // improvements to hiding UI / making grid and sprite outline clear
 // calculating grid lines color based on bgcolor
 // no smudging on gesture
-
+/////////////////////////
 
 
 import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-    @EnvironmentObject var basic_presets: Presets
-    @EnvironmentObject var ship_presets: Presets
-    @EnvironmentObject var oscillator_presets: Presets
-    @EnvironmentObject var misc_presets: Presets
+//    @EnvironmentObject var basic_presets: Presets
+//    @EnvironmentObject var ship_presets: Presets
+//    @EnvironmentObject var oscillator_presets: Presets
+//    @EnvironmentObject var misc_presets: Presets
+    @EnvironmentObject var presetsModel: PresetsModel
     @StateObject var customizationManager = CustomizationManager()
     
     // dragging
@@ -169,7 +172,18 @@ struct ContentView: View {
                         }
                     )
                     .sheet(isPresented: $showLibrary) {
-                        Library(basics: basic_presets.data, ships: ship_presets.data, oscillators: oscillator_presets.data, misc: misc_presets.data, showing: $showLibrary, controllerPreset: $customizationManager.controller.loadPreset)
+                        Library(
+                            basics: presetsModel.basics.data
+                            , ships: presetsModel.ships.data
+                            , oscillators: presetsModel.oscillators.data
+                            , misc: presetsModel.misc.data
+//                            basics: basic_presets.data
+//                            , ships: ship_presets.data
+//                            , oscillators: oscillator_presets.data
+//                            , misc: misc_presets.data
+                            , showing: $showLibrary
+                            , controllerPreset: $customizationManager.controller.loadPreset
+                        )
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
