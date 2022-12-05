@@ -16,6 +16,7 @@
 		62241B9C2915950E00C6C7B6 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B982915950D00C6C7B6 /* ContentView.swift */; };
 		62241B9F291597A600C6C7B6 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62241B9E291597A600C6C7B6 /* Grid.swift */; };
 		622F6521293E5EA10073ECFF /* SpeedSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F6520293E5EA10073ECFF /* SpeedSlider.swift */; };
+		622F6523293E84350073ECFF /* ColorPallette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622F6522293E84350073ECFF /* ColorPallette.swift */; };
 		623AF815293AF0FA00DE23C9 /* basic_presets.plist in Resources */ = {isa = PBXBuildFile; fileRef = 623AF814293AF0FA00DE23C9 /* basic_presets.plist */; };
 		623AF817293AF53C00DE23C9 /* PresetsLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623AF816293AF53C00DE23C9 /* PresetsLib.swift */; };
 		6244787B291BE75E00407FE2 /* Actions.sks in Resources */ = {isa = PBXBuildFile; fileRef = 62447878291BE75E00407FE2 /* Actions.sks */; };
@@ -43,6 +44,7 @@
 		62241B982915950D00C6C7B6 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		62241B9E291597A600C6C7B6 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 		622F6520293E5EA10073ECFF /* SpeedSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeedSlider.swift; sourceTree = "<group>"; };
+		622F6522293E84350073ECFF /* ColorPallette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorPallette.swift; sourceTree = "<group>"; };
 		623AF814293AF0FA00DE23C9 /* basic_presets.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = basic_presets.plist; sourceTree = "<group>"; };
 		623AF816293AF53C00DE23C9 /* PresetsLib.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresetsLib.swift; sourceTree = "<group>"; };
 		62447878291BE75E00407FE2 /* Actions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Actions.sks; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				62CE3424293A9D8B00AB0C76 /* Library.swift */,
 				62CE3426293A9E7100AB0C76 /* PresetCard.swift */,
 				622F6520293E5EA10073ECFF /* SpeedSlider.swift */,
+				622F6522293E84350073ECFF /* ColorPallette.swift */,
 			);
 			path = ui_elements;
 			sourceTree = "<group>";
@@ -225,6 +228,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				622F6523293E84350073ECFF /* ColorPallette.swift in Sources */,
 				620CE77B291EB10E008448A6 /* CircleButton.swift in Sources */,
 				62241B9A2915950E00C6C7B6 /* SimulationLib.swift in Sources */,
 				620CE77E291EB6F0008448A6 /* ControlBlock.swift in Sources */,

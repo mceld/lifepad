@@ -71,7 +71,7 @@ class GameScene: SKScene {
         addChild(grid)
         
         // grid settings
-        let delay = SKAction.wait(forDuration: 0.08)
+        let delay = SKAction.wait(forDuration: 1)
         let coroutine = SKAction.perform(#selector(runSimulation), onTarget: self) // coroutine for cells
         let stepSequence = SKAction.sequence([delay, coroutine])
         let simulation = SKAction.repeatForever(stepSequence)
@@ -79,21 +79,13 @@ class GameScene: SKScene {
         // init camera
         self.camera?.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
         
-        // camera settings
-//        let panGesture = UIPanGestureRecognizer()
-//        panGesture.addTarget(self, action: #selector(handlePan(_:)))
-//        to.addGestureRecognizer(panGesture)
-//
-//        let pinchGesture = UIPinchGestureRecognizer()
-//        pinchGesture.addTarget(self, action: #selector(handlePinch(_:)))
-//        to.addGestureRecognizer(pinchGesture)
-        
-        // tap to toggle a cell
-//        let tapGesture = UITapGestureRecognizer()
-//        tapGesture.addTarget(self, action: #selector(handleTap(_:)))
-//        to.addGestureRecognizer(tapGesture)
+        let uiDelay = SKAction.wait(forDuration: 0.08)
+        let uiCoroutine = SKAction.perform(#selector(checkForChanges), onTarget: self)
+        let uiStepSequence = SKAction.sequence([uiDelay, uiCoroutine])
+        let uiThread = SKAction.repeatForever(uiStepSequence)
         
         self.run(simulation)
+        self.run(uiThread)
     }
     
 //    @objc func handleTap(_ sender: UITapGestureRecognizer) {
@@ -157,8 +149,7 @@ class GameScene: SKScene {
         self.view?.preferredFramesPerSecond = fps
     }
     
-    
-    @objc func runSimulation() {
+    @objc func checkForChanges() {
         // check for UI changes from the "Controller"
         
         // clear the board when a change is received
@@ -199,6 +190,14 @@ class GameScene: SKScene {
             customizationManager.controller.hideUIChange = false
         }
         
+        // set the last color that was specified
+        self.lastCellColor = customizationManager.cellColor
+        self.lastGridColor = customizationManager.gridColor
+
+    }
+    
+    
+    @objc func runSimulation() {
         // // // // simulation running, changes from ui controller computed // // // //
         
         if(customizationManager.playing) {
@@ -214,12 +213,9 @@ class GameScene: SKScene {
                 }
             }
             
+//            usleep(1000000)
+            
             // add storage in stack here
         }
-        
-        // set the last color that was specified
-        self.lastCellColor = customizationManager.cellColor
-        self.lastGridColor = customizationManager.gridColor
-        
     }
 }

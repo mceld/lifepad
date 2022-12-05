@@ -13,13 +13,12 @@
 /////////////////////////
 // TODO
 // fix fitting of ui to screen // DONE
+// Color controls, pane with color picker // DONE
+
 // MARK: actually change the speed
-
 // next / previous and return to last play
-// Color controls, pane with color picker
 
-
-
+// MARK: Wishlist
 // improvements to hiding UI / making grid and sprite outline clear
 // calculating grid lines color based on bgcolor
 // no smudging on gesture
@@ -51,6 +50,9 @@ struct ContentView: View {
     
     // showing speed slider
     @State var sliderAnimate: Bool = false
+    
+    // showing color pallette
+    @State var palletteAnimate: Bool = false
     
     var scene: GameScene {
         let game = GameScene(customizationManager: customizationManager)
@@ -89,25 +91,30 @@ struct ContentView: View {
                         })
                 )
             
-            
             HStack(alignment: .center, spacing: CONST_SPACING) { // Control Group
                 
                 // customization, wrap, clear grid
                 VStack(spacing: CONST_SPACING) {
-                    CircleButton( // customize color
-                        iconName: "paintpalette"
-                        , onClick: {
-//                            print(customizationManager)
-//                            self.customizationManager.cellColor =
-//                            UIColor(
-//                                red: Double.random(in: 0...1.0)
-//                                , green: Double.random(in: 0...1.0)
-//                                , blue: Double.random(in: 0...1.0)
-//                                , alpha: 1.0
-//                            )
-                        }
-//                        // TODO change this to redraw the grid with the color changes only
-                    )
+                    HStack {
+                        CircleButton( // customize color
+                            iconName: palletteAnimate ? "xmark" : "paintpalette"
+                            , onClick: {
+                                withAnimation(Animation.spring().speed(1)) {
+                                    palletteAnimate.toggle()
+                                }
+                                //                            print(customizationManager)
+                                //                            self.customizationManager.cellColor =
+                                //                            UIColor(
+                                //                                red: Double.random(in: 0...1.0)
+                                //                                , green: Double.random(in: 0...1.0)
+                                //                                , blue: Double.random(in: 0...1.0)
+                                //                                , alpha: 1.0
+                                //                            )
+                            }
+                            //                        // TODO change this to redraw the grid with the color changes only
+                        )
+                        
+                    }
 //                    VStack(alignment: .center, spacing: 0) {
 //                        ColorPicker("", selection: $customizationManager.cellColor, supportsOpacity: false)
 //                        ColorPicker("", selection: $customizationManager.gridColor, supportsOpacity: false)
@@ -143,9 +150,12 @@ struct ContentView: View {
                         }
                     )
                     
-                    ControlBlock( // play / pause controls
-                        playing: $customizationManager.playing
-                    )
+                    VStack(spacing: CONST_SPACING) {
+                        ColorPallette(cellColor: $customizationManager.cellColor, gridColor: $customizationManager.gridColor, palletteAnimate: $palletteAnimate)
+                        ControlBlock( // play / pause controls
+                            playing: $customizationManager.playing
+                        )
+                    }
                     
                     VStack(spacing: CONST_SPACING) {
                         SpeedSlider(percentage: $customizationManager.sleepPercentage, sliderAnimate: $sliderAnimate)
