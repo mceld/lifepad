@@ -95,33 +95,16 @@ struct ContentView: View {
                 
                 // customization, wrap, clear grid
                 VStack(spacing: CONST_SPACING) {
-                    HStack {
-                        CircleButton( // customize color
-                            iconName: palletteAnimate ? "xmark" : "paintpalette"
-                            , onClick: {
-                                withAnimation(Animation.spring().speed(1)) {
-                                    palletteAnimate.toggle()
-                                }
-                                //                            print(customizationManager)
-                                //                            self.customizationManager.cellColor =
-                                //                            UIColor(
-                                //                                red: Double.random(in: 0...1.0)
-                                //                                , green: Double.random(in: 0...1.0)
-                                //                                , blue: Double.random(in: 0...1.0)
-                                //                                , alpha: 1.0
-                                //                            )
+                    CircleButton( // customize color
+                        iconName: palletteAnimate ? "xmark" : "paintpalette"
+                        , onClick: {
+                            withAnimation(Animation.spring().speed(1)) {
+                                palletteAnimate.toggle()
                             }
-                            //                        // TODO change this to redraw the grid with the color changes only
-                        )
-                        
-                    }
-//                    VStack(alignment: .center, spacing: 0) {
-//                        ColorPicker("", selection: $customizationManager.cellColor, supportsOpacity: false)
-//                        ColorPicker("", selection: $customizationManager.gridColor, supportsOpacity: false)
-//                    }
-//                    .padding(0)
-                        
-                    CircleButton(
+                        }
+                    )
+
+                    CircleButton( // toggle wrap
                         iconName: customizationManager.doWrap ? "infinity" : "lock"
                         , onClick: {
                             self.customizationManager.doWrap.toggle()
@@ -139,13 +122,14 @@ struct ContentView: View {
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
                 .padding(CONST_PADDING)
                 
-//                Spacer()
-                
                 // Play, pause, step
                 HStack(alignment: .bottom, spacing: CONST_SPACING) {
                     CircleButton( // restart from last play
                         iconName: "arrow.counterclockwise"
                         , onClick: {
+                            if !customizationManager.playing {
+                                customizationManager.controller.lastPlay = true
+                            }
                         }
                     )
                     
@@ -153,6 +137,19 @@ struct ContentView: View {
                         ColorPallette(cellColor: $customizationManager.cellColor, gridColor: $customizationManager.gridColor, palletteAnimate: $palletteAnimate)
                         ControlBlock( // play / pause controls
                             playing: $customizationManager.playing
+                            , onPlay: {
+                                customizationManager.lastPlay = scene.grid.spriteGrid
+                            }
+                            , previous: {
+                                if !customizationManager.playing {
+                                    customizationManager.controller.previous = true
+                                }
+                            }
+                            , next: {
+                                if !customizationManager.playing {
+                                    customizationManager.controller.next = true
+                                }
+                            }
                         )
                     }
                     
@@ -172,8 +169,6 @@ struct ContentView: View {
                 .frame(maxHeight: .infinity, alignment: .bottom)
                 .padding(CONST_PADDING)
                 
-//                Spacer()
-                
                 // hide ui, library
                 VStack(spacing: CONST_SPACING) {
                     CircleButton( // hide ui
@@ -189,7 +184,8 @@ struct ContentView: View {
                             currentScale = 1.0
                             dragOffset = CGSize.zero
                             position = CGSize.zero
-                        })
+                        }
+                    )
                     
                     CircleButton( // library of configs
                         iconName: "text.book.closed"

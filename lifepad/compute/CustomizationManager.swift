@@ -13,6 +13,9 @@ struct Controller {
     var clearChange: Bool
     var hideUIChange: Bool
     var loadPreset: [[Int32]]?
+    var previous: Bool
+    var next: Bool
+    var lastPlay: Bool
 }
 
 class CustomizationManager: NSObject, ObservableObject {
@@ -22,6 +25,10 @@ class CustomizationManager: NSObject, ObservableObject {
     @Published var playing: Bool
     @Published var uiOpacity: Double
     @Published var speedPercentage: Double
+    
+    @Published var stepStack: StepStack
+    @Published var stackPointer: Int
+    @Published var lastPlay: [[CellSprite]]?
     
     var showLibrarySheet: Bool
     var controller: Controller
@@ -38,8 +45,31 @@ class CustomizationManager: NSObject, ObservableObject {
             clearChange: false
             , hideUIChange: false
             , loadPreset: nil
+            , previous: false
+            , next: false
+            , lastPlay: false
         )
-        self.speedPercentage = 0.5 // if you update the default value here, make sure to change the default height of the slider (SpeedSlider.swift)
+        // NOTE if you update the default value here, make sure to change the default height of the slider (SpeedSlider.swift)
+        self.speedPercentage = 0.5
+        
+        // stack initialization
+        self.stepStack = StepStack(stack: [])
+        self.stackPointer = 0
+        self.lastPlay = nil
+    }
+    
+//    // moves the stack pointer back once
+//    mutating func back() {
+//        stackPointer -= 1
+//    }
+//
+//    // moves the stack pointer forward once
+//    mutating func next() {
+//        stackPointer += 1
+//    }
+    
+    func movePointerBack() {
+        stackPointer = min(stepStack.maxFrames, max(0, stackPointer - 1))
     }
     
     override var description: String {

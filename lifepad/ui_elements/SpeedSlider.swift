@@ -8,7 +8,7 @@ import SwiftUI
 struct SpeedSlider: View {
 
     @State var dragOffset = 0.0
-    @State var sliderHeight = 150 * 0.5 // if changing the initial height, change the initial percentage, not best practice but makes the gesture code easier to understand
+    @State var sliderHeight = 150 * 0.5 // NOTE if changing the initial height, change the initial percentage, not best practice but makes the gesture code easier to understand
     
     @Binding var percentage: Double
     @Binding var sliderAnimate: Bool
@@ -38,7 +38,6 @@ struct SpeedSlider: View {
                 })
             )
             .opacity(sliderAnimate ? 1.0 : 0.0)
-        
     }
 }
 

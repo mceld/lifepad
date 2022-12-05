@@ -160,24 +160,70 @@ class GameScene: SKScene {
         self.lastGridColor = customizationManager.gridColor
         self.lastSpeedPercentage = customizationManager.speedPercentage
         
+    }
+    
+    func sceneNextGen() -> [[Cell]] {
+        let changedGrid = nextGen(cellGrid: grid.spriteGrid, rows: rows, cols: cols, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
         
+        // push the most recent simulation change to the stack
+        customizationManager.stepStack.push(element: changedGrid)
+        
+        return changedGrid
+    }
+    
+    func drawGen(refGrid: [[Cell]]) {
+        for i in 0..<rows {
+            for j in 0..<cols {
+                grid.spriteGrid[i][j].alive = refGrid[i][j].state
+            }
+        }
+    }
+    
+    func drawGenFromSprites(refGrid: [[CellSprite]]) {
+        for i in 0..<rows {
+            for j in 0..<cols {
+                grid.spriteGrid[i][j].alive = refGrid[i][j].alive
+            }
+        }
     }
     
     @objc func runSimulation() {
-        // // // // simulation running, changes from ui controller computed // // // //
         
+        // draw the last "play"
+        if(customizationManager.controller.lastPlay) {
+            print("lastPlay")
+            if(customizationManager.lastPlay != nil) {
+                print("not nil")
+                drawGenFromSprites(refGrid: customizationManager.lastPlay!)
+            }
+            customizationManager.controller.lastPlay = false
+        }
+            
+        // go back one frame on the stack
+        if(customizationManager.controller.previous) {
+            print("prev")
+            customizationManager.movePointerBack()
+            let prevGrid = customizationManager.stepStack.peekAt(index: customizationManager.stackPointer)
+            if prevGrid != nil {
+                drawGen(refGrid: prevGrid!)
+            }
+            customizationManager.controller.previous = false
+        }
+        
+        // go forward one frame on the stack
+        if(customizationManager.controller.next) {
+            let changedGrid = sceneNextGen()
+            drawGen(refGrid: changedGrid)
+            customizationManager.controller.next = false
+        }
+        
+        // while playing...
         if(customizationManager.playing) {
             // calculate next gen
-//            sim = nextGen(sim: sim, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
-            let changedGrid = nextGen(cellGrid: grid.spriteGrid, rows: rows, cols: cols, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
+            let changedGrid = sceneNextGen()
             
             // draw the next gen
-            for i in 0..<rows {
-                for j in 0..<cols {
-                    grid.spriteGrid[i][j].alive = changedGrid[i][j].state
-                }
-            }
-            // add storage in stack here
+            drawGen(refGrid: changedGrid)
         }
     }
 }

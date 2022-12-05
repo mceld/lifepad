@@ -9,19 +9,14 @@ struct ControlBlock: View {
     @State private var playPauseIcon: String = "play"
     @Binding var playing: Bool
     
-    func togglePlaying() {
-        if(playing) {
-//            playPauseIcon = "play"
-            playing = false
-        } else {
-//            playPauseIcon = "pause"
-            playing = true
-        }
-    }
+    var onPlay: () -> Void
+    var previous: () -> Void
+    var next: () -> Void
     
     var body: some View {
         HStack(spacing: 1) {
             Button(action: {
+                previous()
             }) {
                 Image(systemName: "backward.end")
                     .frame(width: 50, height: 50)
@@ -30,7 +25,8 @@ struct ControlBlock: View {
             }
             // play / pause
             Button(action: {
-                togglePlaying()
+                playing.toggle()
+                onPlay()
             }) {
                 Image(systemName: playing ? "pause" : "play")
                     .frame(width: 50, height: 50)
@@ -38,6 +34,7 @@ struct ControlBlock: View {
                     .foregroundColor(colorScheme == .dark ? lightColor : darkColor)
             }
             Button(action: {
+                next()
             }) {
                 Image(systemName: "forward.end")
                     .frame(width: 50, height: 50)
