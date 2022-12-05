@@ -21,8 +21,7 @@ class CustomizationManager: NSObject, ObservableObject {
     @Published var doWrap: Bool
     @Published var playing: Bool
     @Published var uiOpacity: Double
-    @Published var gestureActive: Bool // ??
-    @Published var sleepPercentage: Double
+    @Published var speedPercentage: Double
     
     var showLibrarySheet: Bool
     var controller: Controller
@@ -34,14 +33,13 @@ class CustomizationManager: NSObject, ObservableObject {
         self.doWrap = false
         self.playing = false
         self.uiOpacity = 1.0
-        self.gestureActive = false
         self.showLibrarySheet = false
         self.controller = Controller(
             clearChange: false
             , hideUIChange: false
             , loadPreset: nil
         )
-        self.sleepPercentage = 0.8
+        self.speedPercentage = 0.5 // if you update the default value here, make sure to change the default height of the slider (SpeedSlider.swift)
     }
     
     override var description: String {

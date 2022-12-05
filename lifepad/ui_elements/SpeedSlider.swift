@@ -3,33 +3,12 @@
 
 import SwiftUI
 
-//struct SpeedSlider: View {
-//
-//    @Binding var sleepTime: Double
-//    @Binding var animateOpacity: Bool
-//    @Environment(\.colorScheme) var colorScheme
-//
-//    var body: some View {
-//        Slider(
-//            value: $sleepTime
-//            , in: -3...0
-//            , step: 0.1
-//        ) {
-//
-//        }
-//        .frame(width: 50, height: 150)
-//        .rotationEffect(.degrees(-90))
-//        .background(.white)
-//        .opacity(animateOpacity ? 1.0 : 0.0)
-//    }
-//}
-
 // custom slider inspired by https://stackoverflow.com/questions/58286350/how-to-create-custom-slider-by-using-swiftui
 
 struct SpeedSlider: View {
 
     @State var dragOffset = 0.0
-    @State var sliderHeight = 150 * 0.8 // if changing the initial height, change the initial percentage, not best practice but makes the gesture code easier to understand
+    @State var sliderHeight = 150 * 0.5 // if changing the initial height, change the initial percentage, not best practice but makes the gesture code easier to understand
     
     @Binding var percentage: Double
     @Binding var sliderAnimate: Bool

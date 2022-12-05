@@ -146,7 +146,6 @@ struct ContentView: View {
                     CircleButton( // restart from last play
                         iconName: "arrow.counterclockwise"
                         , onClick: {
-                            scene.changeSpeed(fps: 1)
                         }
                     )
                     
@@ -158,7 +157,7 @@ struct ContentView: View {
                     }
                     
                     VStack(spacing: CONST_SPACING) {
-                        SpeedSlider(percentage: $customizationManager.sleepPercentage, sliderAnimate: $sliderAnimate)
+                        SpeedSlider(percentage: $customizationManager.speedPercentage, sliderAnimate: $sliderAnimate)
                             .padding(0)
                         CircleButton( // speed controls
                             iconName: sliderAnimate ? "xmark" : "speedometer"

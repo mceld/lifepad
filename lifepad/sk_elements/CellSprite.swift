@@ -40,7 +40,7 @@ class CellSprite: SKShapeNode {
             }
             
             // CellSprite's parent is Grid, Grid's parent is GameScene
-            if(!(self.parent?.parent as! GameScene).customizationManager.playing && !(self.parent?.parent as! GameScene).customizationManager.gestureActive) {
+            if(!(self.parent?.parent as! GameScene).customizationManager.playing) {
                 // an alive cell is being touched, set it to dead
                 self.alive = false
             }

@@ -5,8 +5,8 @@ import SwiftUI
 class GameScene: SKScene {
     @ObservedObject var customizationManager: CustomizationManager // Holds UI and customization info
     
-//    let maxSeconds = 2.0
-    let preferredFrameRate = 30.0
+    let SIM_ACTION_KEY = "simulation"
+    let UI_ACTION_KEY = "ui"
     
     let rows = Int(round(UIScreen.main.bounds.height / 7.5))
     let cols = Int(round(UIScreen.main.bounds.width / 7.5))
@@ -15,9 +15,12 @@ class GameScene: SKScene {
     
     var grid: Grid! // area where cells / lines are drawn
     
+    var simCoroutine: SKAction!
+    
     var previousCameraPoint = CGPoint.zero
     var lastCellColor: Color!
     var lastGridColor: Color!
+    var lastSpeedPercentage: Double!
     
     init(customizationManager: CustomizationManager) {
         
@@ -34,17 +37,22 @@ class GameScene: SKScene {
         self.lastCellColor = customizationManager.cellColor
         self.lastGridColor = customizationManager.gridColor
         
+        // set initial speed
+        self.lastSpeedPercentage = customizationManager.speedPercentage
+        
         // size should be equal to cols/rows * blocksize
         super.init(size: CGSize(width: cols * Int(blockSize), height: rows * Int(blockSize)))
         
-        // set up the camera to handle pinch / drag gestures
-        // MARK: Can be used as a handle to recenter as well.
-        let cam = SKCameraNode()
-        self.camera = cam
-        
         self.backgroundColor = UIColor(lastGridColor) // init grid / background color
         
-        self.view?.preferredFramesPerSecond = max(1, Int(customizationManager.sleepPercentage * preferredFrameRate))
+        // grid settings
+        let delay = SKAction.wait(forDuration: 0.08)
+        let coroutine = SKAction.perform(#selector(runSimulation), onTarget: self) // coroutine for cells
+        let stepSequence = SKAction.sequence([delay, coroutine])
+        let simulation = SKAction.repeatForever(stepSequence)
+        
+        self.simCoroutine = simulation
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,24 +78,17 @@ class GameScene: SKScene {
         // adds the grid to the scene
         addChild(grid)
         
-        // grid settings
-        let delay = SKAction.wait(forDuration: 1)
-        let coroutine = SKAction.perform(#selector(runSimulation), onTarget: self) // coroutine for cells
-        let stepSequence = SKAction.sequence([delay, coroutine])
-        let simulation = SKAction.repeatForever(stepSequence)
-        
-        // init camera
-        self.camera?.position = CGPoint(x: self.frame.midX, y: self.frame.midY)
-        
+        // ui settings
         let uiDelay = SKAction.wait(forDuration: 0.08)
         let uiCoroutine = SKAction.perform(#selector(checkForChanges), onTarget: self)
         let uiStepSequence = SKAction.sequence([uiDelay, uiCoroutine])
         let uiThread = SKAction.repeatForever(uiStepSequence)
         
-        self.run(simulation)
-        self.run(uiThread)
+        self.run(self.simCoroutine, withKey: SIM_ACTION_KEY)
+        self.run(uiThread, withKey: UI_ACTION_KEY)
     }
     
+    // MARK: could be used to handle editing
 //    @objc func handleTap(_ sender: UITapGestureRecognizer) {
 //        if(customizationManager.uiOpacity < 1.0) {
 //            print("setting opacity")
@@ -95,58 +96,17 @@ class GameScene: SKScene {
 //        }
 //    }
     
-    // camera pan gesture
-    @objc func handlePan(_ sender: UIPanGestureRecognizer) {
-        // camera has a weak reference, check before proceeding
-        guard let camera = self.camera else {
-            return
-        }
-        
-        // save camera position when starting movement
-        if sender.state == .began {
-            previousCameraPoint = camera.position
-        }
-
-        // move the camera
-        let translation = sender.translation(in: self.view)
-        let newPosition = CGPoint(
-            x: previousCameraPoint.x + translation.x * -1
-            , y: previousCameraPoint.y + translation.y
-        )
-
-        camera.position = newPosition
-    }
-
-    @objc func handlePinch(_ sender: UIPinchGestureRecognizer) {
-        guard let camera = self.camera else {
-            return
-        }
-        
-        if sender.state == .began || sender.state == .changed {
-            let currentScale: CGFloat = (camera.xScale)
-            let minScale: CGFloat = 0.5
-            let maxScale: CGFloat = 2.0
-            let zoomSpeed: CGFloat = 0.5
-            var deltaScale = sender.scale
-
-            deltaScale = ((deltaScale - 1) * zoomSpeed) + 1
-            deltaScale = min(deltaScale, maxScale / currentScale)
-            deltaScale = max(deltaScale, minScale / currentScale)
-
-            camera.xScale = deltaScale
-            camera.yScale = deltaScale
-        }
-    }
-    
+    // MARK: could be used to control speed or other appearance fields
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
     }
     
-    // Control actions
-//    func clearGrid
-    func changeSpeed(fps: Int) {
-        print("HERE")
-        self.view?.preferredFramesPerSecond = fps
+    func calculateSpeed(percentage: Double) -> Double {
+        let minSpeed = 0.25
+        let maxSpeed = 2.0
+        // at 0 the speed should be about a quarter
+        // at 1 the speed should be 2
+        return (percentage * (maxSpeed - minSpeed)) + minSpeed
     }
     
     @objc func checkForChanges() {
@@ -190,12 +150,18 @@ class GameScene: SKScene {
             customizationManager.controller.hideUIChange = false
         }
         
+        if customizationManager.speedPercentage != self.lastSpeedPercentage {
+            // somewhat of a UI change, change the delay value of the simulation thread
+            self.action(forKey: SIM_ACTION_KEY)!.speed = calculateSpeed(percentage: customizationManager.speedPercentage)
+        }
+        
         // set the last color that was specified
         self.lastCellColor = customizationManager.cellColor
         self.lastGridColor = customizationManager.gridColor
-
+        self.lastSpeedPercentage = customizationManager.speedPercentage
+        
+        
     }
-    
     
     @objc func runSimulation() {
         // // // // simulation running, changes from ui controller computed // // // //
@@ -209,12 +175,8 @@ class GameScene: SKScene {
             for i in 0..<rows {
                 for j in 0..<cols {
                     grid.spriteGrid[i][j].alive = changedGrid[i][j].state
-//                    grid.spriteGrid[i][j].fillColor = UIColor(customizationManager.cellColor) // TODO should be moved to a function that simply updates all CellSprite children on the grid
                 }
             }
-            
-//            usleep(1000000)
-            
             // add storage in stack here
         }
     }
