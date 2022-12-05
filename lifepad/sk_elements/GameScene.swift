@@ -5,6 +5,9 @@ import SwiftUI
 class GameScene: SKScene {
     @ObservedObject var customizationManager: CustomizationManager // Holds UI and customization info
     
+//    let maxSeconds = 2.0
+    let preferredFrameRate = 30.0
+    
     let rows = Int(round(UIScreen.main.bounds.height / 7.5))
     let cols = Int(round(UIScreen.main.bounds.width / 7.5))
     let blockSize: CGFloat = 10.0
@@ -40,6 +43,8 @@ class GameScene: SKScene {
         self.camera = cam
         
         self.backgroundColor = UIColor(lastGridColor) // init grid / background color
+        
+        self.view?.preferredFramesPerSecond = max(1, Int(customizationManager.sleepPercentage * preferredFrameRate))
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -145,8 +150,15 @@ class GameScene: SKScene {
         // Called before each frame is rendered
     }
     
+    // Control actions
+//    func clearGrid
+    func changeSpeed(fps: Int) {
+        print("HERE")
+        self.view?.preferredFramesPerSecond = fps
+    }
+    
+    
     @objc func runSimulation() {
-        
         // check for UI changes from the "Controller"
         
         // clear the board when a change is received

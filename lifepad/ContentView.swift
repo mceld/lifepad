@@ -13,9 +13,9 @@
 /////////////////////////
 // TODO
 // fix fitting of ui to screen // DONE
+// MARK: actually change the speed
 
 // next / previous and return to last play
-// Speed control
 // Color controls, pane with color picker
 
 
@@ -30,6 +30,9 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
+    let CONST_PADDING = 2.0
+    let CONST_SPACING = 2.0
+    
     @EnvironmentObject var presetsModel: PresetsModel
     @StateObject var customizationManager = CustomizationManager()
     
@@ -45,6 +48,9 @@ struct ContentView: View {
     
     // library sheet
     @State private var showLibrary = false
+    
+    // showing speed slider
+    @State var sliderAnimate: Bool = false
     
     var scene: GameScene {
         let game = GameScene(customizationManager: customizationManager)
@@ -84,10 +90,10 @@ struct ContentView: View {
                 )
             
             
-            HStack(alignment: .center, spacing: 1) { // Control Group
+            HStack(alignment: .center, spacing: CONST_SPACING) { // Control Group
                 
                 // customization, wrap, clear grid
-                VStack(spacing: 1) {
+                VStack(spacing: CONST_SPACING) {
                     CircleButton( // customize color
                         iconName: "paintpalette"
                         , onClick: {
@@ -124,33 +130,43 @@ struct ContentView: View {
                     )
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(0)
+                .padding(CONST_PADDING)
                 
 //                Spacer()
                 
                 // Play, pause, step
-                HStack(spacing: 1) {
+                HStack(alignment: .bottom, spacing: CONST_SPACING) {
                     CircleButton( // restart from last play
                         iconName: "arrow.counterclockwise"
-                        , onClick: {}
+                        , onClick: {
+                            scene.changeSpeed(fps: 1)
+                        }
                     )
                     
                     ControlBlock( // play / pause controls
                         playing: $customizationManager.playing
                     )
                     
-                    CircleButton( // speed controls
-                        iconName: "speedometer"
-                        , onClick: {}
-                    )
+                    VStack(spacing: CONST_SPACING) {
+                        SpeedSlider(percentage: $customizationManager.sleepPercentage, sliderAnimate: $sliderAnimate)
+                            .padding(0)
+                        CircleButton( // speed controls
+                            iconName: sliderAnimate ? "xmark" : "speedometer"
+                            , onClick: {
+                                withAnimation(Animation.spring().speed(1)) {
+                                    sliderAnimate.toggle()
+                                }
+                            }
+                        )
+                    }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottom)
-                .padding(0)
+                .padding(CONST_PADDING)
                 
 //                Spacer()
                 
                 // hide ui, library
-                VStack(spacing: 1) {
+                VStack(spacing: CONST_SPACING) {
                     CircleButton( // hide ui
                         iconName: "eye.slash"
                         , onClick: {
@@ -184,7 +200,7 @@ struct ContentView: View {
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
-                .padding(0)
+                .padding(CONST_PADDING)
                 
             }
             .frame(
@@ -195,7 +211,7 @@ struct ContentView: View {
                 alignment: .bottom
             )
             .opacity(customizationManager.uiOpacity)
-            .padding(0)
+            .padding(CONST_PADDING)
         }
         .onAppear {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation") // Forcing the rotation to portrait

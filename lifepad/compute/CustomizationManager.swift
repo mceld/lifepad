@@ -22,6 +22,7 @@ class CustomizationManager: NSObject, ObservableObject {
     @Published var playing: Bool
     @Published var uiOpacity: Double
     @Published var gestureActive: Bool // ??
+    @Published var sleepPercentage: Double
     
     var showLibrarySheet: Bool
     var controller: Controller
@@ -40,6 +41,7 @@ class CustomizationManager: NSObject, ObservableObject {
             , hideUIChange: false
             , loadPreset: nil
         )
+        self.sleepPercentage = 0.8
     }
     
     override var description: String {

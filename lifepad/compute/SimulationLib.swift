@@ -128,6 +128,7 @@ func nextGen(
     , cols: Int
     , doWrap: Bool
     , neighborCoords: [(Int, Int)]
+//    , sleepTime: Double
 ) -> [[Cell]] {
     var returnGrid = emptyGrid(rows: rows, cols: cols)
 
