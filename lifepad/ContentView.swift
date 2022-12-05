@@ -12,7 +12,8 @@
 
 /////////////////////////
 // TODO
-// fix fitting of ui to screen
+// fix fitting of ui to screen // DONE
+
 // next / previous and return to last play
 // Speed control
 // Color controls, pane with color picker
@@ -29,10 +30,6 @@ import SwiftUI
 import SpriteKit
 
 struct ContentView: View {
-//    @EnvironmentObject var basic_presets: Presets
-//    @EnvironmentObject var ship_presets: Presets
-//    @EnvironmentObject var oscillator_presets: Presets
-//    @EnvironmentObject var misc_presets: Presets
     @EnvironmentObject var presetsModel: PresetsModel
     @StateObject var customizationManager = CustomizationManager()
     
@@ -59,44 +56,41 @@ struct ContentView: View {
     }
     
     var body: some View {
-        ZStack { // Overlay controls on grid
+        ZStack(alignment: .leading) { // Overlay controls on grid
+            
             SpriteView(scene: scene)
                 .equatable()
                 .offset(x: dragOffset.width + position.width, y: dragOffset.height + position.height)
                 .scaleEffect(constrainZoom(magnification: pinchValue))
-//                .scaleEffect(currentScale)
                 .gesture(
                     DragGesture()
                         .onChanged { gesture in
-//                            customizationManager.gestureActive = true
                             dragOffset = gesture.translation
                         }
                         .onEnded({ gesture in
                             position.width += gesture.translation.width
                             position.height += gesture.translation.height
                             dragOffset = CGSize.zero
-//                            customizationManager.gestureActive = false
                         })
                 )
                 .gesture(
                     MagnificationGesture()
                         .updating($pinchValue, body: { (value, state, _) in
-//                            customizationManager.gestureActive = true
                             state = value
                         })
                         .onEnded({ (value) in
                             currentScale = constrainZoom(magnification: value)
-//                            customizationManager.gestureActive = false
                         })
                 )
-//                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-            HStack { // Control Group
+            
+            
+            HStack(alignment: .center, spacing: 1) { // Control Group
                 
                 // customization, wrap, clear grid
-                VStack {
-//                    CircleButton( // customize color
-//                        iconName: "paintpalette"
-//                        , onClick: {
+                VStack(spacing: 1) {
+                    CircleButton( // customize color
+                        iconName: "paintpalette"
+                        , onClick: {
 //                            print(customizationManager)
 //                            self.customizationManager.cellColor =
 //                            UIColor(
@@ -105,12 +99,15 @@ struct ContentView: View {
 //                                , blue: Double.random(in: 0...1.0)
 //                                , alpha: 1.0
 //                            )
-//                        }
+                        }
 //                        // TODO change this to redraw the grid with the color changes only
-//                    )
-                    ColorPicker("", selection: $customizationManager.cellColor)
-                    ColorPicker("", selection: $customizationManager.gridColor)
-                    
+                    )
+//                    VStack(alignment: .center, spacing: 0) {
+//                        ColorPicker("", selection: $customizationManager.cellColor, supportsOpacity: false)
+//                        ColorPicker("", selection: $customizationManager.gridColor, supportsOpacity: false)
+//                    }
+//                    .padding(0)
+                        
                     CircleButton(
                         iconName: customizationManager.doWrap ? "infinity" : "lock"
                         , onClick: {
@@ -127,10 +124,12 @@ struct ContentView: View {
                     )
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
-//                .padding(5)
+                .padding(0)
+                
+//                Spacer()
                 
                 // Play, pause, step
-                HStack {
+                HStack(spacing: 1) {
                     CircleButton( // restart from last play
                         iconName: "arrow.counterclockwise"
                         , onClick: {}
@@ -146,10 +145,12 @@ struct ContentView: View {
                     )
                 }
                 .frame(maxHeight: .infinity, alignment: .bottom)
-//                .padding(5)
+                .padding(0)
+                
+//                Spacer()
                 
                 // hide ui, library
-                VStack {
+                VStack(spacing: 1) {
                     CircleButton( // hide ui
                         iconName: "eye.slash"
                         , onClick: {
@@ -177,17 +178,13 @@ struct ContentView: View {
                             , ships: presetsModel.ships.data
                             , oscillators: presetsModel.oscillators.data
                             , misc: presetsModel.misc.data
-//                            basics: basic_presets.data
-//                            , ships: ship_presets.data
-//                            , oscillators: oscillator_presets.data
-//                            , misc: misc_presets.data
                             , showing: $showLibrary
                             , controllerPreset: $customizationManager.controller.loadPreset
                         )
                     }
                 }
                 .frame(maxHeight: .infinity, alignment: .bottomLeading)
-//                .padding(5)
+                .padding(0)
                 
             }
             .frame(
@@ -198,6 +195,7 @@ struct ContentView: View {
                 alignment: .bottom
             )
             .opacity(customizationManager.uiOpacity)
+            .padding(0)
         }
         .onAppear {
             UIDevice.current.setValue(UIInterfaceOrientation.portrait.rawValue, forKey: "orientation") // Forcing the rotation to portrait
@@ -206,6 +204,7 @@ struct ContentView: View {
             AppDelegate.orientationLock = .all // Unlocking the rotation when leaving the view
         }
         .statusBarHidden(true)
+        .padding(0)
     }
 }
 

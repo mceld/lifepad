@@ -4,6 +4,9 @@ import Foundation
 import SpriteKit
 import SwiftUI
 
+// main source: https://stackoverflow.com/questions/33464925/draw-a-grid-with-spritekit
+
+
 extension UIColor {
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0

@@ -20,7 +20,7 @@ struct ControlBlock: View {
     }
     
     var body: some View {
-        HStack {
+        HStack(spacing: 1) {
             Button(action: {
             }) {
                 Image(systemName: "backward.end")
@@ -50,9 +50,3 @@ struct ControlBlock: View {
         
     }
 }
-
-//struct ControlBlock_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ControlBlock()
-//    }
-//}

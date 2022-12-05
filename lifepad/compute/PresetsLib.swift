@@ -8,6 +8,7 @@ struct Preset: Identifiable, Hashable {
     var coords: [[Int32]]
 }
 
+// Stores all plist preset information in one model
 class PresetsModel: ObservableObject {
     @Published var basics: Presets
     @Published var ships: Presets

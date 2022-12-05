@@ -13,6 +13,7 @@ struct CircleButton: View {
             onClick()
         }) {
             Image(systemName: iconName)
+                .padding(5)
         }
         .frame(width: 50, height: 50)
         .font(.title)
