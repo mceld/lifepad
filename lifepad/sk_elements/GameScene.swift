@@ -16,6 +16,7 @@ class GameScene: SKScene {
     var grid: Grid! // area where cells / lines are drawn
     
     var simCoroutine: SKAction!
+    var initGrid: [[Cell]]!
     
     var previousCameraPoint = CGPoint.zero
     var lastCellColor: Color!
@@ -28,6 +29,7 @@ class GameScene: SKScene {
         self.customizationManager = customizationManager
         
         let initGrid = randomGrid(rows: rows, cols: cols)
+        self.initGrid = initGrid
         
         // initialize spritekit grid, draw all cells
         grid = Grid(blockSize: blockSize, rows: rows, cols: cols, initCellColor: UIColor(customizationManager.cellColor), initGridColor: UIColor(customizationManager.gridColor))
@@ -77,6 +79,8 @@ class GameScene: SKScene {
         
         // adds the grid to the scene
         addChild(grid)
+        
+        customizationManager.stepStack.push(element: initGrid) // place the initial grid in the history
         
         // ui settings
         let uiDelay = SKAction.wait(forDuration: 0.08)
@@ -152,6 +156,7 @@ class GameScene: SKScene {
         
         if customizationManager.speedPercentage != self.lastSpeedPercentage {
             // somewhat of a UI change, change the delay value of the simulation thread
+//            self.action(forKey: SIM_ACTION_KEY)!.
             self.action(forKey: SIM_ACTION_KEY)!.speed = calculateSpeed(percentage: customizationManager.speedPercentage)
         }
         
@@ -162,20 +167,49 @@ class GameScene: SKScene {
         
     }
     
+    // copy the last sprite grid for the stack
+    func spriteGridToGrid() -> [[Cell]] {
+        
+        var newGrid: [[Cell]] = []
+        
+        for i in 0..<rows {
+            var tempRow: [Cell] = []
+            for j in 0..<cols {
+                tempRow.append(Cell(state: grid.spriteGrid[i][j].alive, row: i, col: j))
+            }
+            newGrid.append(tempRow)
+        }
+        
+        return newGrid
+        
+    }
+    
     func sceneNextGen() -> [[Cell]] {
+        
+        let prevGrid = spriteGridToGrid() // returns a copy of the last sprite grid for the stack
+        customizationManager.stepStack.push(element: prevGrid)
+        
+        print("stack size:")
+        print(customizationManager.stepStack.stack.count)
+        
         let changedGrid = nextGen(cellGrid: grid.spriteGrid, rows: rows, cols: cols, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
         
         // push the most recent simulation change to the stack
-        customizationManager.stepStack.push(element: changedGrid)
+//        customizationManager.stepStack.push(element: changedGrid)
         
         return changedGrid
     }
     
-    func drawGen(refGrid: [[Cell]]) {
-        for i in 0..<rows {
-            for j in 0..<cols {
-                grid.spriteGrid[i][j].alive = refGrid[i][j].state
+    func drawGen(refGrid: [[Cell]]?) {
+        if refGrid != nil {
+            for i in 0..<rows {
+                for j in 0..<cols {
+                    grid.spriteGrid[i][j].alive = refGrid![i][j].state
+                }
             }
+        } else {
+            print("grid is nil")
+            return
         }
     }
     
@@ -189,24 +223,20 @@ class GameScene: SKScene {
     
     @objc func runSimulation() {
         
-        // draw the last "play"
-        if(customizationManager.controller.lastPlay) {
-            print("lastPlay")
-            if(customizationManager.lastPlay != nil) {
-                print("not nil")
-                drawGenFromSprites(refGrid: customizationManager.lastPlay!)
-            }
-            customizationManager.controller.lastPlay = false
-        }
+//        // draw the last "play"
+//        if(customizationManager.controller.lastPlay) {
+//            print("lastPlay")
+//            if(customizationManager.lastPlay != nil) {
+//                print("not nil")
+//                drawGenFromSprites(refGrid: customizationManager.lastPlay!)
+//            }
+//            customizationManager.controller.lastPlay = false
+//        }
             
         // go back one frame on the stack
         if(customizationManager.controller.previous) {
-            print("prev")
-            customizationManager.movePointerBack()
-            let prevGrid = customizationManager.stepStack.peekAt(index: customizationManager.stackPointer)
-            if prevGrid != nil {
-                drawGen(refGrid: prevGrid!)
-            }
+            let prevGrid = customizationManager.stepStack.pop()
+            drawGen(refGrid: prevGrid)
             customizationManager.controller.previous = false
         }
         

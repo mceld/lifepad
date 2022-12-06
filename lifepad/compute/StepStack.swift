@@ -8,8 +8,9 @@ struct StepStack {
     var stack: [[[Cell]]] // array of matrices
     
     mutating func pop() -> [[Cell]]? {
-        if stack.count != 0 {
-            return stack.remove(at: 0)
+        if stack.count > 1 { // there must always be a frame on the stack
+            let element = stack.remove(at: 0)
+            return element
         }
         return nil
     }
@@ -24,8 +25,8 @@ struct StepStack {
     mutating func push(element: [[Cell]]) {
         if stack.count >= maxFrames {
             // remove the last item on the stack, shouldn't be empty if maxFrames is greater than 0
-            stack.remove(at: stack.count - 1)
             stack.insert(element, at: 0) // put the most recent at the front
+            stack.remove(at: stack.count - 1)
         } else {
             stack.insert(element, at: 0)
         }
@@ -37,13 +38,5 @@ struct StepStack {
         }
         return nil
     }
-    
-    // hold the simulation during the last "play"
-    
-    // reset the stack on every new play
-    
-    // hold a max of 25-30 simulation / grid frames
-    
-    // move the stack pointer up or down with pop or "move up"
     
 }

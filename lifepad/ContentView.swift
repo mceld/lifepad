@@ -142,11 +142,13 @@ struct ContentView: View {
                             }
                             , previous: {
                                 if !customizationManager.playing {
+                                    print("prev")
                                     customizationManager.controller.previous = true
                                 }
                             }
                             , next: {
                                 if !customizationManager.playing {
+                                    print("next")
                                     customizationManager.controller.next = true
                                 }
                             }
