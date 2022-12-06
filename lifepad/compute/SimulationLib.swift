@@ -1,4 +1,7 @@
+//
+// SimuationLib.swift
 // Contains functions for creating, manipulating, and printing a Conway's game of life simulation
+//
 
 import Foundation
 import UIKit
@@ -47,6 +50,7 @@ func randomGrid(rows: Int, cols: Int) -> [[Cell]] {
     return grid
 }
 
+// Neighbors are constant (1 cell in every direction of the current)
 func makeNeighborCoords() -> [(Int, Int)] {
     let neighborCoords: [(vertical: Int, horizontal: Int)] = [
         (vertical: 0, horizontal: 1)
@@ -62,10 +66,12 @@ func makeNeighborCoords() -> [(Int, Int)] {
     return neighborCoords
 }
 
+// Turns an index that would go off the grid to the other size
 func wrap(size: Int, num: Int) -> Int {
     return ( size + num ) % size
 }
 
+// Accounts for wrapping and determines the intended index of the current neighbor cell
 func determineNeighborIndex(size: Int, num: Int, offset: Int, doWrap: Bool) -> Int {
     // if we are about to go off the grid in the positive or negative direction
     if(num + offset > size - 1 || num + offset < 0) {
@@ -78,6 +84,7 @@ func determineNeighborIndex(size: Int, num: Int, offset: Int, doWrap: Bool) -> I
     return num + offset
 }
 
+// Returns a list of cells that are neighbors of the cell at (cellRow, cellCol).  Accounts for wrapping
 func getNeighbors(
     cellRow: Int
     , cellCol: Int
@@ -91,7 +98,7 @@ func getNeighbors(
     
     // Check all neighbors -> determine if the row or col value exceeds or goes below the max or 0
     // if that's true, check doWrap, add the neighbor at the wrapped coord if it's on
-    // don't add a neighbor at all if it's off
+    // don't add a neighbor at all if it's off the grid
     
     for coord in neighborCoords {
         
@@ -110,6 +117,7 @@ func getNeighbors(
     return neighbors
 }
 
+// Counts the number of live neighbors in a given list of cells
 func getLiveNeighbors(neighbors: [CellSprite]) -> Int {
     var count = 0
     
@@ -122,13 +130,15 @@ func getLiveNeighbors(neighbors: [CellSprite]) -> Int {
     return count
 }
 
+// Calculates the next generation of cells based on Conway's rules
+// Live: 2 or 3 live neighbors -> stay alive, otherwise: die.
+// Dead: 3 live neighbors -> become alive, otherwise: stay dead.
 func nextGen(
     cellGrid: [[CellSprite]]
     , rows: Int
     , cols: Int
     , doWrap: Bool
     , neighborCoords: [(Int, Int)]
-//    , sleepTime: Double
 ) -> [[Cell]] {
     var returnGrid = emptyGrid(rows: rows, cols: cols)
 
@@ -152,147 +162,3 @@ func nextGen(
     }
     return returnGrid
 }
-
-//func nextGen(
-//    sim: Simulation
-//    , doWrap: Bool
-//    , neighborCoords: [(Int, Int)]
-//) -> Simulation {
-//    let returnSim = Simulation(rows: sim.rows, cols: sim.cols, grid: emptyGrid(rows: sim.rows, cols: sim.cols), liveCells: [])
-//
-//    for i in 0..<sim.rows {
-//        for j in 0..<sim.cols {
-//
-//            let cell = sim.grid[i][j]
-//            let neighbors = getNeighbors(cell: cell, sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
-//            let liveNeighbors = getLiveNeighbors(neighbors: neighbors)
-//
-//            if (cell.state) { // live
-//                if(liveNeighbors == 2 || liveNeighbors == 3) {
-//                    returnSim.grid[i][j].state = true
-//                    returnSim.liveCells.append(returnSim.grid[i][j])
-//                }
-//            } else { // dead
-//                if(liveNeighbors == 3) {
-//                    returnSim.grid[i][j].state = true
-//                    returnSim.liveCells.append(returnSim.grid[i][j])
-//                }
-//            }
-//        }
-//    }
-//    return returnSim
-//}
-
-// // // //
-// MARK: ARCHIVE
-// // // //
-
-//func nextGen(
-//    sim: Simulation
-//    , doWrap: Bool
-//    , neighborCoords: [(vertical: Int, horizontal: Int)]
-//) -> Simulation {
-//    var newGrid: [[Cell]] = emptyGrid(length: sim.length, width: sim.width)
-//    var newLiveCells: [Cell] = []
-//    let salientCells: [Cell] = getSalientCells(sim: sim, doWrap: doWrap, neighborCoords: neighborCoords)
-//
-//    // Loop over all salient cells (live cells and their dead neighbors)
-//    // do things differently if the cell is alive or dead
-//    for var salientCell in salientCells {
-//        let neighbors = getNeighbors(
-//            cell: salientCell
-//            , sim: sim
-//            , doWrap: doWrap
-//            , neighborCoords: neighborCoords
-//        )
-//
-//        // Apply Conway's rules
-//        // Live cells live only if they have 2 or 3 neighbors
-//        // Dead cells become live if they have exactly 3 neighbors
-//        // Live cells should be added to the newLiveCells list
-//
-//        let liveNeighbors: Int = getLiveNeighbors(neighbors: neighbors)
-//
-//        if (salientCell.state) { // live
-//            if(liveNeighbors == 2 || liveNeighbors == 3) {
-//                newLiveCells.append(salientCell)
-//            }
-//        } else { // dead
-//            if(liveNeighbors == 3) {
-//                salientCell.state = true // Dead cell lives!
-//                newLiveCells.append(salientCell)
-//            }
-//        }
-//
-//    }
-//
-//    // Add all live cells for the next generation to the new grid
-//    for newLiveCell in newLiveCells {
-//        newGrid[newLiveCell.row][newLiveCell.col].state = newLiveCell.state
-//    }
-//
-//    // Return the newly constructed simulation
-//    return Simulation(length: sim.length, width: sim.width, grid: newGrid, liveCells: newLiveCells)
-//
-//}
-
-//extension Simulation: CustomStringConvertible {
-//    var description: String {
-//        var result: String = ""
-//
-//        for i in 0..<rows {
-//            for j in 0..<cols {
-//                if(grid[i][j].state == true) {
-//                    result += "@"
-//                } else {
-//                    result += "."
-//                }
-//            }
-//            result += "\n"
-//        }
-//
-//        return result
-//    }
-//}
-
-//func getSalientCells(
-//    sim: Simulation
-//    , doWrap: Bool
-//    , neighborCoords: [(vertical: Int, horizontal: Int)]
-//) -> [Cell] {
-//    // Get the combination of liveCells and the dead neighbors of liveCells
-//    var salientCells = sim.liveCells
-//    for cell in sim.liveCells {
-//
-//        // find every neighbor
-//        let neighbors = getNeighbors(
-//            cell: cell
-//            , sim: sim
-//            , doWrap: doWrap
-//            , neighborCoords: neighborCoords
-//        )
-//
-//        // add only the dead neighbors
-//        for neighbor in neighbors {
-//            if neighbor.state == false {
-//                salientCells.append(neighbor)
-//            }
-//        }
-//    }
-//
-//    return salientCells
-//}
-//class Simulation: NSObject, ObservableObject {
-//    var rows: Int
-//    var cols: Int
-//    var grid: [[Cell]]
-//    var liveCells: [Cell]
-//
-//    init(rows: Int, cols: Int, grid: [[Cell]], liveCells: [Cell]) {
-//        self.rows = rows
-//        self.cols = cols
-//        self.grid = grid
-//        self.liveCells = liveCells
-//    }
-//
-//}

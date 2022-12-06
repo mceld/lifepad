@@ -1,3 +1,8 @@
+# Python script for generating plist items from a simple coords file
+# For developers that want to add to the presets library
+# Coords file format
+# x y
+# ... for n lines
 import sys
 
 #

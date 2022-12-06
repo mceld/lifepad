@@ -1,9 +1,16 @@
-// https://medium.com/devtechie/opacity-animation-in-swiftui-d7c38e3cc494
-// slider opacity animation
+//
+// SpeedSlider.swift
+// View that changes the animation rate of the simulation
+//
+
+// Sources
+//
+// Custom slider inspired by https://stackoverflow.com/questions/58286350/how-to-create-custom-slider-by-using-swiftui
+// Slider opacity animation from https://medium.com/devtechie/opacity-animation-in-swiftui-d7c38e3cc494
 
 import SwiftUI
 
-// custom slider inspired by https://stackoverflow.com/questions/58286350/how-to-create-custom-slider-by-using-swiftui
+
 
 struct SpeedSlider: View {
 
@@ -40,7 +47,3 @@ struct SpeedSlider: View {
             .opacity(sliderAnimate ? 1.0 : 0.0)
     }
 }
-
-//extension Slider {
-//    track
-//}

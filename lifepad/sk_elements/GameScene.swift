@@ -1,3 +1,15 @@
+//
+// GameScene.swift
+// Defines and handles all background threading and state changes for the simulation
+// Relies on two threads: UI & Simulation to handle changes given by the user or the simulation.
+// All drawn grid information stored in grid (a Grid object populated with SpriteCell structs that can be drawn)
+//
+
+// Sources
+//
+// Main guidepoint: https://thecoderpilot.blog/2020/10/21/building-an-ios-version-of-the-conways-game-of-life/
+
+
 import SpriteKit
 import GameplayKit
 import SwiftUI
@@ -5,20 +17,20 @@ import SwiftUI
 class GameScene: SKScene {
     @ObservedObject var customizationManager: CustomizationManager // Holds UI and customization info
     
-    let SIM_ACTION_KEY = "simulation"
-    let UI_ACTION_KEY = "ui"
+    let SIM_ACTION_KEY = "simulation" // Key for the simulation thread
+    let UI_ACTION_KEY = "ui" // key for the UI thread
+    let minSpeed = 0.25 // lowest possible animation speed for slider
+    let maxSpeed = 2.0 // highest possible animation speed for slider
     
     let rows = Int(round(UIScreen.main.bounds.height / 7.5))
     let cols = Int(round(UIScreen.main.bounds.width / 7.5))
-    let blockSize: CGFloat = 10.0
+    let blockSize: CGFloat = 10.0 // size of distances between rows and cols and cells
     let neighborCoords: [(Int, Int)] = makeNeighborCoords() // array of coordinates to check around every cell
     
     var grid: Grid! // area where cells / lines are drawn
-    
-    var simCoroutine: SKAction!
+    var simCoroutine: SKAction! // holds simulation thread info
     var initGrid: [[Cell]]!
     
-    var previousCameraPoint = CGPoint.zero
     var lastCellColor: Color!
     var lastGridColor: Color!
     var lastSpeedPercentage: Double!
@@ -28,7 +40,7 @@ class GameScene: SKScene {
         // set sim and customization manager
         self.customizationManager = customizationManager
         
-        let initGrid = randomGrid(rows: rows, cols: cols)
+        let initGrid = randomGrid(rows: rows, cols: cols) // randomize the grid on load
         self.initGrid = initGrid
         
         // initialize spritekit grid, draw all cells
@@ -47,7 +59,7 @@ class GameScene: SKScene {
         
         self.backgroundColor = UIColor(lastGridColor) // init grid / background color
         
-        // grid settings
+        // simulation coroutine settings
         let delay = SKAction.wait(forDuration: 0.08)
         let coroutine = SKAction.perform(#selector(runSimulation), onTarget: self) // coroutine for cells
         let stepSequence = SKAction.sequence([delay, coroutine])
@@ -57,11 +69,13 @@ class GameScene: SKScene {
         
     }
     
+    // required by swiftc
     required init?(coder aDecoder: NSCoder) {
         self.customizationManager = CustomizationManager()
         super.init(coder: aDecoder)
     }
     
+    // allows for editing (turning cells on and off
     override var isUserInteractionEnabled: Bool {
         get {
             return true
@@ -84,7 +98,7 @@ class GameScene: SKScene {
         
         // ui settings
         let uiDelay = SKAction.wait(forDuration: 0.08)
-        let uiCoroutine = SKAction.perform(#selector(checkForChanges), onTarget: self)
+        let uiCoroutine = SKAction.perform(#selector(checkForUIChanges), onTarget: self)
         let uiStepSequence = SKAction.sequence([uiDelay, uiCoroutine])
         let uiThread = SKAction.repeatForever(uiStepSequence)
         
@@ -92,29 +106,17 @@ class GameScene: SKScene {
         self.run(uiThread, withKey: UI_ACTION_KEY)
     }
     
-    // MARK: could be used to handle editing
-//    @objc func handleTap(_ sender: UITapGestureRecognizer) {
-//        if(customizationManager.uiOpacity < 1.0) {
-//            print("setting opacity")
-//            self.customizationManager.uiOpacity = 1.0
-//        }
-//    }
-    
-    // MARK: could be used to control speed or other appearance fields
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-    }
-    
+    // bounds the possible animation speeds given by the slider
     func calculateSpeed(percentage: Double) -> Double {
-        let minSpeed = 0.25
-        let maxSpeed = 2.0
         // at 0 the speed should be about a quarter
         // at 1 the speed should be 2
         return (percentage * (maxSpeed - minSpeed)) + minSpeed
     }
     
-    @objc func checkForChanges() {
+    // Main UI thread
+    @objc func checkForUIChanges() {
         // check for UI changes from the "Controller"
+        // Controller "emits" changes that must be communicated to the SKScene
         
         // clear the board when a change is received
         if(customizationManager.controller.clearChange) {
@@ -125,6 +127,7 @@ class GameScene: SKScene {
         // load a preset
         if(customizationManager.controller.loadPreset != nil) {
             grid.loadPreset(preset: customizationManager.controller.loadPreset!)
+            customizationManager.stepStack.stack = [spriteGridToGrid()] // reset the stack with just this frame
             customizationManager.controller.loadPreset = nil
         }
         
@@ -143,20 +146,15 @@ class GameScene: SKScene {
             self.grid.setTexture(color: findLineColor(color: UIColor(customizationManager.gridColor)))
         }
         
+        // hide ui if requested
         if(customizationManager.controller.hideUIChange) {
             customizationManager.uiOpacity = 0.0
-//            for i in 0..<rows {
-//                for j in 0..<cols {
-//                    grid.spriteGrid[i][j].strokeColor = .clear
-//                }
-//            }
-//            grid.texture = gridTexture(blockSize: blockSize, rows: rows, cols: cols, color: UIColor.clear)
             customizationManager.controller.hideUIChange = false
         }
         
+        // if the speed percentage has changed, alter the SKAction
         if customizationManager.speedPercentage != self.lastSpeedPercentage {
             // somewhat of a UI change, change the delay value of the simulation thread
-//            self.action(forKey: SIM_ACTION_KEY)!.
             self.action(forKey: SIM_ACTION_KEY)!.speed = calculateSpeed(percentage: customizationManager.speedPercentage)
         }
         
@@ -167,7 +165,7 @@ class GameScene: SKScene {
         
     }
     
-    // copy the last sprite grid for the stack
+    // copy the last sprite grid to place in the history
     func spriteGridToGrid() -> [[Cell]] {
         
         var newGrid: [[Cell]] = []
@@ -184,22 +182,20 @@ class GameScene: SKScene {
         
     }
     
+    // Add the current simulation frame to the stack, generate the next one, and draw it
+    // Similar to the "playing" if block in the main thread
     func sceneNextGen() -> [[Cell]] {
         
         let prevGrid = spriteGridToGrid() // returns a copy of the last sprite grid for the stack
         customizationManager.stepStack.push(element: prevGrid)
         
-        print("stack size:")
-        print(customizationManager.stepStack.stack.count)
-        
         let changedGrid = nextGen(cellGrid: grid.spriteGrid, rows: rows, cols: cols, doWrap: customizationManager.doWrap, neighborCoords: neighborCoords)
-        
-        // push the most recent simulation change to the stack
-//        customizationManager.stepStack.push(element: changedGrid)
         
         return changedGrid
     }
     
+    // Alter the CellSprite structs' appearance on the GameScene
+    // Drawing the simulation state
     func drawGen(refGrid: [[Cell]]?) {
         if refGrid != nil {
             for i in 0..<rows {
@@ -208,30 +204,22 @@ class GameScene: SKScene {
                 }
             }
         } else {
-            print("grid is nil")
             return
         }
     }
     
-    func drawGenFromSprites(refGrid: [[CellSprite]]) {
-        for i in 0..<rows {
-            for j in 0..<cols {
-                grid.spriteGrid[i][j].alive = refGrid[i][j].alive
-            }
-        }
-    }
-    
+    // Main simulation thread, also listens for navigation across the simulation frame history via the "StepStack"
     @objc func runSimulation() {
         
-//        // draw the last "play"
-//        if(customizationManager.controller.lastPlay) {
-//            print("lastPlay")
-//            if(customizationManager.lastPlay != nil) {
-//                print("not nil")
-//                drawGenFromSprites(refGrid: customizationManager.lastPlay!)
-//            }
-//            customizationManager.controller.lastPlay = false
-//        }
+        // draw the last "play"
+        if(customizationManager.controller.loadLastFrame) {
+            let bottom = customizationManager.stepStack.bottom()
+            if bottom != nil {
+                drawGen(refGrid: bottom)
+                customizationManager.stepStack.stack = [bottom!]
+            }
+            customizationManager.controller.loadLastFrame = false
+        }
             
         // go back one frame on the stack
         if(customizationManager.controller.previous) {

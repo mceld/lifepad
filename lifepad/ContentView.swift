@@ -1,29 +1,21 @@
-// Main view holding all Lifepad controls and scenes
-// https://www.hackingwithswift.com/quick-start/swiftui/how-to-integrate-spritekit-using-spriteview
-// https://stackoverflow.com/questions/68365480/pass-share-class-with-spriteview-gamescene-from-a-swiftui-view // State and environment
-// https://stackoverflow.com/questions/38865788/moving-camera-in-spritekit-swift
+//
+// ContentView.swift
+// Main view holding all Lifepad controls and scenes, manages state and communicates user UI requests to the GameScene
+//
 
+// Sources
+//
+// SpriteKit and SwiftUI integration: https://www.hackingwithswift.com/quick-start/swiftui/how-to-integrate-spritekit-using-spriteview
+// State and environment management in SpriteKit + SwiftUI: https://stackoverflow.com/questions/68365480/pass-share-class-with-spriteview-gamescene-from-a-swiftui-view
+// Magnification gestures: https://www.youtube.com/watch?v=-pok--jpGIQ&ab_channel=StewartLynch
+// Drag gestures: https://www.youtube.com/watch?v=2ZK5wfbvvS4&ab_channel=StewartLynch
+// Constraining zoom on magnification: https://www.youtube.com/watch?v=6MHoN6mdfB0&ab_channel=DevTechie
 
-// https://thecoderpilot.blog/2020/10/21/building-an-ios-version-of-the-conways-game-of-life/ // main resource
-//https://www.youtube.com/watch?v=-pok--jpGIQ&ab_channel=StewartLynch // magnification gesture
-// https://www.youtube.com/watch?v=2ZK5wfbvvS4&ab_channel=StewartLynch // drag gesture
-// https://www.youtube.com/watch?v=6MHoN6mdfB0&ab_channel=DevTechie // constraining zoom
-
-
-/////////////////////////
-// TODO
-// fix fitting of ui to screen // DONE
-// Color controls, pane with color picker // DONE
-
-// MARK: actually change the speed
-// next / previous and return to last play
 
 // MARK: Wishlist
-// improvements to hiding UI / making grid and sprite outline clear
+// improvements to hiding UI: making grid and sprite outline clear
 // calculating grid lines color based on bgcolor
 // no smudging on gesture
-/////////////////////////
-
 
 import SwiftUI
 import SpriteKit
@@ -128,7 +120,7 @@ struct ContentView: View {
                         iconName: "arrow.counterclockwise"
                         , onClick: {
                             if !customizationManager.playing {
-                                customizationManager.controller.lastPlay = true
+                                customizationManager.controller.loadLastFrame = true
                             }
                         }
                     )
@@ -137,18 +129,14 @@ struct ContentView: View {
                         ColorPallette(cellColor: $customizationManager.cellColor, gridColor: $customizationManager.gridColor, palletteAnimate: $palletteAnimate)
                         ControlBlock( // play / pause controls
                             playing: $customizationManager.playing
-                            , onPlay: {
-                                customizationManager.lastPlay = scene.grid.spriteGrid
-                            }
+                            , stack: $customizationManager.stepStack
                             , previous: {
                                 if !customizationManager.playing {
-                                    print("prev")
                                     customizationManager.controller.previous = true
                                 }
                             }
                             , next: {
                                 if !customizationManager.playing {
-                                    print("next")
                                     customizationManager.controller.next = true
                                 }
                             }
@@ -232,6 +220,9 @@ struct ContentView: View {
 }
 
 
+// SpriteView should not be redrawn, because it manages its own simulation state
+// If not implemented this way, the game scene will be redrawn whenever the state of the ContentView changes
+// This Equatable extension requires that we use the CustomizationManager as a controller
 extension SpriteView: Equatable {
     public static func == (lhs: SpriteView, rhs: SpriteView) -> Bool {
         return true

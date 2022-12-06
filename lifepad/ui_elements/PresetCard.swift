@@ -1,3 +1,8 @@
+//
+// PresetCard.swift
+// Displays a single preset, image, name, and description
+//
+
 import SwiftUI
 
 struct PresetCard: View {

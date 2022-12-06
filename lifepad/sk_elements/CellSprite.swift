@@ -1,9 +1,11 @@
-import Foundation
-import SpriteKit
-import SwiftUI
-
+//
+// CellSprite.swift
 // Used for drawing cells where there are cells in the simulation
 // Overlayed on grid
+//
+
+import Foundation
+import SpriteKit
 
 class CellSprite: SKShapeNode {
     
@@ -26,6 +28,7 @@ class CellSprite: SKShapeNode {
         super.init(coder: aDecoder)
     }
     
+    // Alter the state of the simulation (make a live cell dead) when the user taps
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         let position = touch!.location(in: self)

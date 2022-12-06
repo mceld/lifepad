@@ -1,4 +1,12 @@
-// most presets come from https://conwaylife.com/wiki/
+//
+// Library.swift
+// List view that holds loadable presets, fit for use with a bottom sheet
+//
+
+// Sources
+//
+// Presets from https://conwaylife.com/wiki/
+
 import SwiftUI
 
 struct Library: View {
@@ -56,7 +64,6 @@ struct Library: View {
                                         // launch the preset
                                         showing = false
                                         controllerPreset = osc.coords
-                                        print(osc.name)
                                     }
                                 )
                             )
@@ -83,9 +90,3 @@ struct Library: View {
         }
     }
 }
-
-//struct Library_Previews: PreviewProvider {
-//    static var previews: some View {
-//        Library(showing: true)
-//    }
-//}

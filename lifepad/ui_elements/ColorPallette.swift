@@ -1,8 +1,6 @@
 //
-//  ColorPallette.swift
-//  lifepad
-//
-//  Created by GCCISAdmin on 12/5/22.
+// ColorPallette.swift
+// Pop-up view that holds color pickers and allow for simulation grid customization
 //
 
 import SwiftUI

@@ -1,3 +1,8 @@
+//
+// CircleButton
+// General, styled button view that supports any onClick action, fits the intended style, and changes with the device's color theme
+//
+
 import SwiftUI
 
 struct CircleButton: View {

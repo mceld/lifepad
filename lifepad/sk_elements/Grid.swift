@@ -1,12 +1,18 @@
+//
+// Grid.swift
 // SKSpriteNode that should render the grid based on the simulation state
+//
+
+// Sources
+//
+// Bezier stroke source: https://stackoverflow.com/questions/33464925/draw-a-grid-with-spritekit
+// Brightness formula source: https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
 
 import Foundation
 import SpriteKit
 import SwiftUI
 
-// main source: https://stackoverflow.com/questions/33464925/draw-a-grid-with-spritekit
-
-
+// Allow for brightness calculation
 extension UIColor {
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0
@@ -19,8 +25,8 @@ extension UIColor {
     }
 }
 
+// Determine whether the grid lines should be black or white based on grid color (not working somewhere else in code)
 func findLineColor(color: UIColor) -> UIColor {
-    // Brightness formula from https://www.w3.org/WAI/ER/WD-AERT/#color-contrast
     let brightness = ( (color.rgba.red * 299) + (color.rgba.green * 587) + (color.rgba.blue * 114) ) / 1000
     if brightness < 125 { // bright enough to use white lines
         return UIColor(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
@@ -29,6 +35,7 @@ func findLineColor(color: UIColor) -> UIColor {
     }
 }
 
+// Where the simulation is drawn
 class Grid: SKSpriteNode {
 
     var rows: Int!
@@ -38,6 +45,7 @@ class Grid: SKSpriteNode {
     var gridColor: UIColor!
     var spriteGrid: [[CellSprite]] = []
     
+    // Needs the same information as the GameScene
     convenience init?(blockSize: CGFloat, rows: Int, cols: Int, initCellColor: UIColor, initGridColor: UIColor) {
         guard let texture = gridTexture(blockSize: blockSize,rows: rows, cols:cols, color: findLineColor(color: initGridColor)) else {
             return nil
@@ -51,7 +59,8 @@ class Grid: SKSpriteNode {
         self.isUserInteractionEnabled = true
     }
 
-    func gridPosition(row:Int, col:Int) -> CGPoint {
+    // Determine positioning for drawing the grid
+    func gridPosition(row: Int, col: Int) -> CGPoint {
         // Center point is the midpoint on both axes, adjust the display location
         // based on this center assumption
         let x = CGFloat(col) * blockSize - (blockSize * CGFloat(cols)) / 2.0
@@ -59,6 +68,7 @@ class Grid: SKSpriteNode {
         return CGPoint(x: x, y: y)
     }
 
+    // Handles taps and changes the simulation state accordingly, only works when paused
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first
         let position = touch!.location(in:self)
@@ -85,10 +95,12 @@ class Grid: SKSpriteNode {
         }
     }
     
+    // Draw and set the lines as a child of the grid
     func setTexture(color: UIColor) {
         self.texture = gridTexture(blockSize: blockSize, rows: rows, cols: cols, color: color)
     }
     
+    // For fitting a preset to the grid, make
     func presetDims(preset: [[Int32]]) -> (rows: Int, cols: Int) {
         // find the max for both the row and col val and return as dimensions
         var rowMax: Int32 = 0
@@ -107,10 +119,12 @@ class Grid: SKSpriteNode {
         return (rows: Int(rowMax), cols: Int(colMax))
     }
     
+    // Loads presets and places them in the middle of the simulation grid
     func loadPreset(preset: [[Int32]]) {
         var cells: [Cell] = []
         let dims: (rows: Int, cols: Int) = presetDims(preset: preset)
         
+        // ensures that the dimensions do not exceed the size of the grid
         if dims.rows > rows || dims.cols > cols {
             return
         }
@@ -127,6 +141,7 @@ class Grid: SKSpriteNode {
         let offsetRow = max(min(originRow, rows), 0)
         let offsetCol = max(min(originCol, cols), 0)
         
+        // draw the preset in (or close to) the center
         for cell in cells {
             spriteGrid[offsetRow + cell.row][offsetCol + cell.col].alive = true
         }
@@ -169,6 +184,8 @@ class Grid: SKSpriteNode {
 
 }
 
+// From source listed at top of file
+// Draws a series of Bezier-stroked lines to give the appearance of a dithered grid, easier to see and looks better than straight 1px lines
 func gridTexture(blockSize:CGFloat,rows:Int,cols:Int, color: UIColor) -> SKTexture? {
     // Add 1 to the height and width to ensure the borders are within the sprite
     let size = CGSize(width: CGFloat(cols)*blockSize+1.0, height: CGFloat(rows)*blockSize+1.0)

@@ -1,5 +1,18 @@
+//
+// PresetsLib.swift
+// Responsible for loading all preset plist files from the filesystem
+// Arranges Preset structs in a model that can broadcast its state to the rest of the app
+//
+
+// Presets held in the following plist files
+// basic_presets.plist
+// ship_presets.plist
+// oscillator_presets.plist
+// misc_presets.plist
+
 import Foundation
 
+// Represents one preset in the Library list
 struct Preset: Identifiable, Hashable {
     var id: UUID = UUID()
     var name: String
@@ -23,6 +36,7 @@ class PresetsModel: ObservableObject {
     }
 }
 
+// Constructs a Presets object (wrapper for a list of Presets) that can be used as fields in the model
 class Presets {
     
     @Published var data: [Preset] = []
