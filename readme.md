@@ -2,6 +2,14 @@
 
 Project formatted for use with Xcode
 
+`gen_coords.py` can be used to create plist items for new presets.
+
+`coords/` contains `.coord` files that are the format used by `gen_coords.py`.
+
+Additional files in `coords/` are simply example output files.
+
+---
+
 ## Presets
 
 ### Basics
@@ -13,9 +21,9 @@ Project formatted for use with Xcode
 
 ### Ships
 
-- Lightweight spaceship - ""
-- Middleweight spaceship - ""
-- Heavyweight spaceship - ""
+- Lightweight spaceship
+- Middleweight spaceship
+- Heavyweight spaceship
 - Coppperhead - A pulsating ship
 - Loafer - Powered by bread
 - Weekender - A crab-like, pulsating ship

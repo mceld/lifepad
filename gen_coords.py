@@ -1,6 +1,6 @@
 # Python script for generating plist items from a simple coords file
 # For developers that want to add to the presets library
-# Coords file format (examples under coords, any file with extension ".coord")
+# Coords file format (examples under coords/, any file with extension ".coord")
 # x y
 # ... for n lines
 import sys
@@ -21,7 +21,7 @@ def coords_to_string(coord):
             </array>'''.format(coord[0], coord[1])
     )
 
-
+# Uses a job file containing all arguments for coord generation, see example 'jobs.txt'
 def main():
     filename = sys.argv[1]
     jobs = []
